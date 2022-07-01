@@ -1,0 +1,40 @@
+<section id="settings">
+    <h1>Edit Profile</h1>
+    <div class="break"></div>
+    <div class="break"></div>
+    <form id="form" method="post" action="/updateUser/{{session.username}}" enctype="multipart/form-data">    
+        <h1>{{session.username}}</h1>
+        <center><img src="/images/user.png" id="userimg" alt="{{session.username}} display picture"></center>
+        <center><input type="file" id="newimg" accept="image/*"/ size="100"></center>
+        <br />
+        <center><h3 id="message">{{> messages}}</h3></center>
+        <br />
+        <div id="infoEdit">
+            <div id="left">
+                <label for="userEdit" id="userEditLabel"><strong>Username</strong></label>
+                <br />
+                <label for="currPass" id="currPassLabel"><strong>Current Password</strong></label>
+                <br />
+                <label for="newPass" id="newPassLabel"><strong>New Password</strong></label>
+                <br />
+                <label for="confirmNewPass" id="confirmNewPassLabel"><strong>Confirm New Password</strong></label>
+            </div>
+            <div id="right">
+                <input type="text" id="userEdit" name="userEdit" placeholder="8-16 characters" maxlength="16""/>
+                <br />
+                <input type="password" id="currPass" name="currPass" placeholder="required" maxlength="16"/>
+                <br />
+                <input type="password" id="newPass" name="newPass" placeholder="8-16 characters" maxlength="16"/>
+                <br />
+                <input type="password" id="confirmNewPass" name="confirmNewPass" placeholder="8-16 characters" maxlength="16"/>
+            </div>
+        </div>
+        <div id="description">
+            <label for="descEdit"><strong>Short Description</strong></label>
+            <br />
+            <textarea id="descEdit" name="descEdit" placeholder="Short Description (max 150 characters)" maxlength="150">{{description}}</textarea>
+            <br />
+        </div>
+        <center><input type="submit" id="save" value="Save changes"/></center>
+    </form>
+</section>

@@ -1,0 +1,19 @@
+<a href="/">
+	<img src="/images/icon_logo.png" id="avatar" alt="MindHub icon logo" />
+	<img src="/images/text_logo.png" id="title" alt="MindHub text logo" />
+</a>
+<form id="searchForm" action="search.html">
+	<input type="text" placeholder="Search..." id="search" name="search" />
+	<button type="submit"><i class="fa fa-search"></i></button>
+</form>
+<nav class="fill">
+	<ul>
+		{{#if session.isLoggedIn}}
+			<li><a href="/user/{{session.username}}">PROFILE</a></li>
+			<li><a href="/logout">LOG OUT</a></li>
+		{{else}}
+			<li><a href="/login" id="login">LOG IN</a></li>
+			<li><a href="/signup" id="signup">SIGN UP</a></li>
+		{{/if}}
+	</ul>
+</nav>

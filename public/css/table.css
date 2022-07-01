@@ -1,0 +1,41 @@
+table{
+  margin-left:auto;
+  margin-right:auto;
+  box-sizing: border-box;
+  width: 60%;
+  background-color: #ffffff;
+  color:rgb(0, 0, 0);
+  border-collapse: collapse;
+  border: 2px;
+}
+.forum-header{
+  color: white;
+  background-color: #12456d;
+}
+tr{
+  border: solid 1px rgb(0, 0, 0);
+  background-color: #ffffff;
+}
+.table-body td:nth-child(1){
+  font-weight: bold;
+  width:500px;
+}
+
+.table-body{
+  transition: transform .2s; /* Animation */
+}
+
+.table-body:hover{
+  transform: scale(1.04); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  box-shadow: 2px 2px 5px grey, -2px -2px 5px grey;
+}
+
+td{
+  padding:10px;
+}
+.tr td:nth-child(1){
+  text-align: left;
+}
+tr td:nth-child(2),tr td:nth-child(3),tr td:nth-child(4){
+  text-align: center;
+} 
