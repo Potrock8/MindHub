@@ -27,12 +27,7 @@ const loginValidation = [
         .isLength({ min: 8 }).withMessage("Passwords are at least 8 characters long.")
 ];
 
-const deleteValidation = [
-    body('currPass').not().isEmpty().withMessage('Please enter your current password.')
-        .isLength({ min: 8 }).withMessage('Passwords are at least 8 characters long.'),
-];
-
-const updateValidation = [
+const updateUserValidation = [
     body('userEdit').custom((value) => {
         if((value.length > 0) && (value.length < 8))
             throw new Error('New username must be at least 8 characters long.');
@@ -70,4 +65,17 @@ const updateValidation = [
     })
 ];
 
-module.exports = { signupValidation, loginValidation, deleteValidation, updateValidation };
+const deleteUserValidation = [
+    body('currPass').not().isEmpty().withMessage('Please enter your current password.')
+        .isLength({ min: 8 }).withMessage('Passwords are at least 8 characters long.'),
+];
+
+const addThreadValidation = [
+    body('threadTitle').not().isEmpty().withMessage('Thread title is required.')
+        .isLength({ min: 3 }).withMessage('Thread title must be at least 3 characters long.'),
+
+    body('threadContent').not().isEmpty().withMessage('Thread content is required.')
+        .isLength({ min: 3 }).withMessage('Thread content must be at least 3 characters long.')
+];
+
+module.exports = { signupValidation, loginValidation, updateUserValidation, deleteUserValidation, addThreadValidation };

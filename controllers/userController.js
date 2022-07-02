@@ -39,7 +39,7 @@ const userController = {
                     username: userObj.username,
                     description: userObj.shortDescription
                 }
-                res.render('settings', data);
+                res.render('editProfile', data);
             }
             else {
                 req.flash('error_msg', 'User does not exist...');

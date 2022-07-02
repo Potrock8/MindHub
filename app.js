@@ -15,6 +15,8 @@ const database = require('./models/database.js');
 const authRouter = require('./routes/auth.js');
 const indexRouter = require('./routes/index.js');
 const userRouter = require('./routes/user.js');
+const threadRouter = require('./routes/thread.js');
+const commentRouter = require('./routes/comment.js');
 
 dotenv.config();
 host = process.env.HOSTNAME;
@@ -69,6 +71,8 @@ app.use((req, res, next) => {
 app.use('/', authRouter);
 app.use('/', indexRouter);
 app.use('/', userRouter);
+app.use('/', threadRouter);
+app.use('/', commentRouter);
 
 const server = app.listen(port, host, () => {
     console.log(`Server is running at: http://${host}:${port}`);

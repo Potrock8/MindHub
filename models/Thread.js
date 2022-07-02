@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 
 const ThreadSchema = new mongoose.Schema({
-	threadID: {type: Number, required: true},
-    dateCreated: {type: Date, required: true},
-	title: {type: String, required: true},
-    username: {type: String, required: true},
-    content: {type: String, required: true}
+	dateCreated: {type: Date, default: Date.now(), required: true},
+	title: {type: String, min: 3, max: 50, required: true},
+    username: {type: String, min: 8, max: 16, required: true},
+    content: {type: String, min: 3, required: true},
+    img:{
+        data: Buffer,
+        contentType: String
+    }
 });
 
 const Thread = mongoose.model('Thread', ThreadSchema);

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-    dateCreated: {type: Date, default: Date.now},
+    dateCreated: {type: Date, default: Date.now(), required: true},
     emailAddress: {type: String, required: true},
     username: {type: String, min: 8, max: 16, required: true},
     password: {type: String, min: 8, max: 16, required: true},
