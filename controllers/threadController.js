@@ -9,29 +9,11 @@ const threadController = {
     },
 
     getThread: (req, res) => {
-        var query = req.params;
-
-        database.findOne(Thread, query, null, (threadObj) => {
-            if(threadObj instanceof Object) {
-                var data = {
-                    _id: threadObj._id,
-                    dateCreated: threadObj.dateCreated,
-                    title: threadObj.title,
-                    username: threadObj.username,
-                    content: threadObj.content
-                }
-
-                database.findMany(Comment, {threadID: req.params.id }, null, (comments) => {
-                    if(comments !== false)
-                        res.render('thread1', {thread: data, comments: comments});
-                    else
-                        res.render('thread1', {thread: data});
-                });
-            }
-            else {
-                req.flash('error_msg', 'Thread does not exist...');
-                res.redirect('/');
-            }
+        database.findOne(Thread, {_id: req.params.id},null, (found) => {
+            database.findMany(Comment, {threadID: req.params.id }, null, (found2) =>{
+             data = {thread: found, comments: found2};
+             res.render('thread1', data);
+            });
         });
     },
 
@@ -39,8 +21,9 @@ const threadController = {
         var thread = { _id: req.params.id }
         console.log(thread._id);
         database.findOne(Thread, thread, null, (threadObj)=>{
+            console.log(threadObj);
             if(threadObj instanceof Object) {
-                res.render('editThread', threadObj)
+                res.render('editThread', {thread: threadObj})
             }
             else {
                 req.flash('error_msg', 'Unable to find the requested page. Please try again');
@@ -54,8 +37,10 @@ const threadController = {
         const query = {lowerCaseTitle:{$regex: new RegExp(term)}};
 
         database.findMany(Thread, query, null, (found) => {
-            if(found)
-                res.render('search', {result: found});
+            console.log(found);
+            if(found){
+                res.render('search', {results: found});
+            }
             else{
                 req.flash('error_msg', 'No results...')
                 res.redirect('/');
@@ -99,7 +84,7 @@ const threadController = {
                         if(success) {
                             console.log('Successfully created thread');
                             database.findOne(Thread, {title: threadTitle}, null, (thread) => {
-                                res.redirect(`/thread/${thread._id}`);
+                                res.redirect(`/thread/${thread._id.toString()}`);
                             });
                         }
                         else {

@@ -10,20 +10,3 @@
     </div>
 </section>
 <br>
-<div id="pageHeader">
-    <a href="/user/{{username}}">{{username}}'s Threads</a>
-    {{#if session.isLoggedIn}}
-        <a href="/createThread" class="newpost">New Thread &nbsp;<i class="fa fa-plus-square" aria-hidden="true"></i></a>
-    {{/if}}
-</div>
-<div class="block">
-    <table>
-        <tr class="forum-header">
-            <td>Forum Topics</td>
-            <td>Date Published</td>
-        </tr>
-        {{#each threads}}
-            {{>thread}}
-        {{/each}}
-    </table>
-</div>

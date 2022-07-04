@@ -3,32 +3,25 @@ const Comment = require('../models/Comment.js');
 
 const commentController = {
     postAddComment: (req, res) => {
-        const threadTitle = req.params.title;
-        const { threadID, commentContent } = req.body;
-
-        if(commentContent.length > 0) {
+        console.log(req.body.commentContent);
            var comment = {
-                dateCreated: Date.now(),
-                threadID: threadID,
                 username: req.session.username,
-                content: commentContent
+                content: req.body.commentContent,
+                threadID: req.body.threadID,
+                dateCreated: Date.now(),
             };
-
+            console.log(comment);
             database.insertOne(Comment, comment, (success) => {
+                console.log(success);
                 if(success) {
                     console.log('Successfully created new comment.');
-                    res.redirect(`/thread/${threadID}`);
+                    res.redirect(`/thread/${comment.threadID}`);
                 }
                 else {
                     req.flash('error_msg', 'Could not create new comment. Please try again.');
-                    res.redirect(`/thread/${threadID}`);
+                    res.redirect(`/thread/${comment.threadID}`);
                 }
             })
-        }
-        else {
-            req.flash('error_msg', 'Comment field must not be empty if you wish to post a comment.');
-            res.redirect(`/thread/${threadID}`);
-        }
     },
 
     getEditComment: (req, res) => {

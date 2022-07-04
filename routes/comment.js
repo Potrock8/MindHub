@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const commentController = require('../controllers/commentController.js');
 const { isPrivate, isSessionUser } = require('../middlewares/checkAuth.js');
-//not sure
-//router.get('comment/:_id', commentController.getComment);
+
 router.get('/thread/:id/getEditComment/:commentid', isPrivate, commentController.getEditComment)
 router.post('/thread/:id/addComment', isPrivate, commentController.postAddComment);
 router.post('/thread/:id/postEditComment', isPrivate, commentController.postEditComment);

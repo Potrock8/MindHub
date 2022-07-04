@@ -5,33 +5,10 @@ function checkLength(field, length) {
         return true;
 };
 
-function onDisplay(link){
-    var area;
-
-    if(link === "text") {
-      area = $('#contentArea');
-      $('#imageVideoArea').css('display', 'none');
-      
-    } 
-    else if(link === "imageVideo") {
-      area = $('#imageVideoArea');
-      $('#contentArea').css('display', 'none');
-    } 
-    if(area.css('display') === "none")
-      area.css('display', 'block');
-    else 
-      area.css('display', 'none');
-};
-
 function clearText() {
     $('#threadTitle').val('');
     $('#threadContent').val('');
 };
-
-function clearImageVideo() {
-    $('imageVideoArea').val('');
-  }
-
 $(document).ready(() => {
     $('#threadTitle').keyup(() => {
         var title = $('#threadTitle').val();

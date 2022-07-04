@@ -32,10 +32,10 @@
             </div>
             <div class="write-comment" id="write-comment">
               <div class="block">
-                <form id="threadForm" method="POST" action="/thread/{{thread._id}}/addComment">
+                <form method="POST" action="/thread/{{thread._id}}/addComment">
                   <input type="hidden" value="{{thread._id}}" name="threadID" id="threadID" />
                   <textarea id="comment-text" name="commentContent" placeholder="What are your thoughts...?"
-                    required></textarea>
+                    ></textarea>
                     {{> messages}}
                   <button type="submit" id="submitBtn">Submit</button>
                   <button id="cancelBtn">Cancel</button>

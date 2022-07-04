@@ -36,8 +36,7 @@ app.engine('hbs', exphbs.engine({
 
 app.set('view engine', 'hbs');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+
 
 //app.use(expressValidator.expressValidator());
 handlebars.registerHelper('sameUser', (sessionUser, user, options) => {
@@ -55,7 +54,7 @@ handlebars.registerHelper('threadOwner', (sessionUser, user) => {
 
 database.connect(url);
 
-app.use(express.static('public'));
+
 
 app.use(session({
     secret: key,
@@ -74,6 +73,9 @@ app.use((req, res, next) => {
     res.locals.session = req.session;
     next();
 }); 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static('public'));
 
 app.use('/', authRouter);
 app.use('/', indexRouter);

@@ -75,7 +75,7 @@
   float: right;
   font-size: 12px;
   width: 55px;
-  height: 35px;
+  height: 20px;
   padding: 5px;
   cursor: pointer;
   border-radius: 5px;
@@ -85,13 +85,13 @@
   color: rgb(0, 0, 0);
   border: 2px solid #000000;
   text-align: center;
+  margin-left: 5px;
 }
 
 #postBtn:hover, #cancelBtn:hover {
   background-color: #000000;
   color: white;
 }
-
 
 #sub-container {
   border-radius: 7px;
