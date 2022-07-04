@@ -1,0 +1,63 @@
+#info {
+    text-align: center;
+    margin: auto;
+    width: 330px;
+    background-color: white;
+    border: 2px solid #12456d;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+#info h1 {
+    font-size: 32px;
+    color: white;
+    padding: 10px 0 10px 0;
+    background-color: #12456d;
+    border-radius: 10px 10px 0 0;
+    border-color: transparent;
+}
+#infoForm {
+    width: 90%;
+    margin: 10px auto;
+}
+#infoForm input {
+    font-size: 18px;
+    margin: 10px;
+}
+#infoForm [type="text"], #infoForm [type="password"] {
+    border-radius: 5px;
+}
+#infoForm [type="file"] {
+    font-size: 15px;
+    padding-left: 37px;
+}
+textarea {
+    width: 90%;
+    height: 100px;
+    padding-left: 5px;
+    margin-top: 10px;
+}
+#submit {
+    width: 30%;
+    text-decoration: none;
+    color: white;
+    background-color: #12456d;
+    padding: 5px;
+    border-radius: 20px;
+    border-color: transparent;
+}
+#submit:hover {
+    text-decoration: underline;
+    background-color: #135281;
+}
+#message {
+    font-weight: bold;
+    color: red;
+}
+#error {
+    font-weight: bold;
+    color: red;
+}
+#success {
+    font-weight: bold;
+    color: black;
+}

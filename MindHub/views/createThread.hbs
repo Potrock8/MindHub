@@ -1,0 +1,25 @@
+<link rel="stylesheet" type="text/css" href="/css/createthread.css" />
+<div id="pageHeader">
+    <a href="/createThread">Create a New Thread</a>
+    <div class="break"></div>
+</div>
+<div id="sub-container">
+    <div class="postTab flex">
+        <div class="tabColumn">
+            <h3>POST</h3>
+        </div>
+</div>
+<div class="formBox">
+    <form method="POST"  action="/addThread" >
+        <div class="titleArea">
+            <input required type="text" id="threadTitle" name="threadTitle" min="3" max="50" placeholder="Title (3-50 characters)">
+        </div>
+        <div id="contentArea" class="displayBlock">
+            <textarea required id="threadContent" name="threadContent" class="textAreaSize" min="1" placeholder="What are your thoughts...?"></textarea>
+            <h3 id="message">{{> messages}}</h3>
+            <input type="submit" id="postBtn" value="Post" />
+            <button id="cancelBtn">Cancel</button>
+        </div>
+    </form>
+</div>
+<br/>

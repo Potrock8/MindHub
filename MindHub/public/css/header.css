@@ -1,0 +1,156 @@
+#header{
+  display:block;
+  position: fixed;
+  z-index: 1;
+  top:0;
+  overflow:hidden;
+  width:100%;
+  background-color: white;
+  box-shadow:  0 8px 6px -6px #12456d;
+}
+#avatar{
+	float: left;
+	width: 50px; 
+	height: 50px;
+	padding-left: 10px;
+}
+#title{
+	float: left;
+	width: 150px; 
+	height: 30px;
+	padding: 10px 10px 10px 0;
+}
+
+/*SEARCHBOX*/
+#searchForm {
+  display:flex;
+  float:left;
+  padding: 13px 0 0 11%;
+  width: 50%;
+}
+
+#searchForm input[type=text] {
+  padding: 5px;
+  font-size: 12px;
+  border: 1px solid grey;
+  float: left;
+  width: 700px;
+  background: #f1f1f1;
+}
+
+#searchForm button {
+  float: left;
+  width: 30px;
+  padding: 5px;
+  background: #12456d;
+  color: white;
+  font-size: 12px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+#searchForm button:hover {
+  background: rgb(3, 31, 54);
+}
+
+#searchForm::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* NAVIGATION */
+nav {
+  float: right;
+  
+  height: 28px;
+  background: rgb(255, 255, 255);
+}
+nav ul {
+  display: flex;
+  list-style: none;
+  top: 0;
+  text-align: center;
+  overflow: hidden;
+}
+nav ul li {
+  display: flex;
+  float:right;
+}
+nav ul li a {
+  display: block;
+  padding: 15px;
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+nav ul li a,
+nav ul li a:after,
+nav ul li a:before {
+  transition: all .5s;
+}
+nav ul li a:hover {
+  color: #12456d;
+}
+/* stroke */
+nav.stroke ul li a,
+nav.fill ul li a {
+  position: relative;
+}
+nav.stroke ul li a:after,
+nav.fill ul li a:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 0%;
+  content: '.';
+  color: transparent;
+  background: rgb(255, 255, 255);
+  height: 0px;
+}
+nav.stroke ul li a:hover:after {
+  width: 100%;
+}
+
+nav.fill ul li a {
+  transition: all 1s;
+}
+
+nav.fill ul li a:after {
+  text-align: left;
+  content: '.';
+  margin: 0;
+  opacity: 0;
+}
+nav.fill ul li a:hover {
+  color: #fff;
+  z-index: 1;
+}
+nav.fill ul li a:hover:after {
+  z-index: -10;
+  animation: fill 1s forwards;
+  -webkit-animation: fill 1s forwards;
+  -moz-animation: fill 1s forwards;
+  opacity: 1;
+}
+
+/* Keyframes */
+@-webkit-keyframes fill {
+  0% {
+    width: 0%;
+    height: 1px;
+  }
+  50% {
+    width: 100%;
+    height: 1px;
+  }
+  100% {
+    width: 100%;
+    height: 100%;
+    background: #12456d;
+  }
+}

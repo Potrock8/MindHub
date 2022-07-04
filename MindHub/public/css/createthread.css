@@ -1,0 +1,112 @@
+.postTab {
+  border-radius: 5px;
+  background-color:#8ec2eb;
+  padding: 15px;
+  max-width: 100%;
+  border: 2px;
+  margin: 0px;
+}
+
+.tabColumn {
+  color: black;
+  margin: 10px;
+  text-align: center;
+  flex: 50%;
+}
+
+.titleArea{
+  margin: 10px;
+  border: 0px;
+  padding: 10px;
+}
+
+#contentArea {
+  display: block;
+  margin: 10px;
+  border: 0px;
+  padding: 10px;
+} 
+#imageVideoArea{
+  display: none;
+  margin: 10px;
+  border: 0px;
+  padding: 10px;
+}
+
+.formBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.formBox .titleArea input[type=text]{
+  width: 100%;
+  padding: 10px 20px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; 
+}
+
+.formBox #contentArea textarea{
+  resize: none;
+  width: 100%;
+  height: 150px;
+  padding: 10px 20px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.tabButton {
+  background-color: transparent;
+  padding:5px;
+  border: 3px;
+  border-radius: 5px;
+  float:none;
+}
+
+.tabButton:hover {
+  background-color:#306994;
+  color: white;
+}
+
+#postBtn, #cancelBtn {
+  float: right;
+  font-size: 12px;
+  width: 55px;
+  height: 20px;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  text-decoration: none;
+  transition-duration: 0.4s;
+  background-color: white;
+  color: rgb(0, 0, 0);
+  border: 2px solid #000000;
+  text-align: center;
+  margin-left: 5px;
+}
+
+#postBtn:hover, #cancelBtn:hover {
+  background-color: #000000;
+  color: white;
+}
+
+#sub-container {
+  border-radius: 7px;
+  font-size: 15px;
+  background-color: #12456d;
+  color: #f1f1f1;
+  max-width: 60%;
+  max-height: 80%;
+  display: block;
+  padding: 0px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#error {
+  font-weight: bold;
+  color: red;
+}
