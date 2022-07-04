@@ -1,0 +1,28 @@
+<div class="comment-card">
+  <div class="comment-author">
+    <div>
+      <a href="/user/{{username}}">{{username}}</a>
+    </div>
+  </div>
+  <p class="comment-edit" id="comment-edit">
+    {{content}}
+  </p>
+  <hr>
+  <div class="bottom">
+    <p class="timestamp">
+      <i class="fa fa-clock-o"></i>
+      {{dateFormat dateCreated "L, LT "}}
+    </p>
+    
+    <a href="/thread/{{threadID}}/editComment/{{_id}}" class="edit-btn" id="cmtEditBtn">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+    </a>
+    <form action="/thread/{{threadID}}/deleteComment" method="POST">
+    <input type="hidden" value="{{_id}}" name="commentID" id="commentID" />
+    <button type="submit" class="delete-btn" id="cmtDeleteBtn">
+      <i class="fa fa-trash-o" aria-hidden="true"></i>
+    </button>
+    </form>
+
+  </div>
+</div>

@@ -12,7 +12,9 @@
 <br>
 <div id="pageHeader">
     <a href="/user/{{username}}">{{username}}'s Threads</a>
-    <a href="../createthread.html" class="newpost">New Thread &nbsp;<i class="fa fa-plus-square" aria-hidden="true"></i></a>
+    {{#if session.isLoggedIn}}
+        <a href="/createThread" class="newpost">New Thread &nbsp;<i class="fa fa-plus-square" aria-hidden="true"></i></a>
+    {{/if}}
 </div>
 <div class="block">
     <table>
@@ -20,6 +22,8 @@
             <td>Forum Topics</td>
             <td>Date Published</td>
         </tr>
-        {{>thread}}
+        {{#each threads}}
+            {{>thread}}
+        {{/each}}
     </table>
 </div>

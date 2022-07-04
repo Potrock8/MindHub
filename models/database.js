@@ -26,11 +26,17 @@ const database = {
 
 	findOne: (model, query, projection, callback) => {
 		model.findOne(query, projection, (error, result) => {
-			if(error)
-				return callback(false);
+			if(error) return callback(false);
 			return callback(result);
-		});
+		}).lean();
 	},
+
+	findMany: function(model, query, projection, callback) {
+        model.find(query, projection, function(error, result) {
+            if(error) return callback(false);
+            return callback(result);
+        }).lean();
+    },
 
 	updateOne: function(model, filter, update, callback) {
         model.updateOne(filter, update, (error, result) => {
@@ -42,12 +48,19 @@ const database = {
 
 	deleteOne: function(model, filter, callback) {
 		model.deleteOne(filter, (error, result) => {
-			if(error) 
-				return callback(false);
+			if(error) return callback(false);
             console.log('Document deleted: ' + result.deletedCount);
             return callback(true);
 		});
-	}
+	},
+
+	deleteMany: function(model, conditions, callback) {
+        model.deleteMany(conditions, function (error, result) {
+            if(error) return callback(false);
+            console.log('Document deleted: ' + result.deletedCount);
+            return callback(true);
+        });
+    }
 };
 
 module.exports = database;

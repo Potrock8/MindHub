@@ -3,15 +3,12 @@
     <div class="break"></div>
     <div class="break"></div>
     <h3 id="message">{{> messages}}</h3>
-    <form id="infoForm" method="post" action="/loginUser" enctype="multipart/form-data">
+    <form id="infoForm" method="post" action="/loginUser">
         <label for="userLog" id="userLabel"><strong>Username</strong></label>
         <input type="text" id="userLog" name="userLog" maxlength="16"/>
         <br />
         <label for="password" id="passLabel"><strong>Password</strong></label>
         <input type="password" id="password" name="password" maxlength="16"/>
-        <br />
-        <label for="remember">Remember me?</label>
-        <input type="checkbox" id="remember" name="remember" />
         <br />
         <input type="submit" id="submit" value="Log In" />
         <br />

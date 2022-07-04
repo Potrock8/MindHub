@@ -2,14 +2,15 @@ const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const express = require('express');
-const fileUpload = require('express-fileupload');
 const flash = require('connect-flash');
 const exphbs = require('express-handlebars');
 const handlebars = require('handlebars');
 const mongoose = require('mongoose');
 const path = require('path');
 const session = require('express-session');
+const expressValidator = require('express-validator');
 const MongoStore = require('connect-mongo');
+handlebars.registerHelper('dateFormat', require('handlebars-dateformat'));
 
 const database = require('./models/database.js');
 const authRouter = require('./routes/auth.js');
@@ -38,6 +39,7 @@ app.set('view engine', 'hbs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+//app.use(expressValidator.expressValidator());
 handlebars.registerHelper('sameUser', (sessionUser, user, options) => {
     if(sessionUser === user)
         return '<a id="editProfile" href="/editProfile/' + sessionUser + '">Edit Profile</a>\n' +
@@ -45,10 +47,15 @@ handlebars.registerHelper('sameUser', (sessionUser, user, options) => {
     return options.inverse(this);
 });
 
+handlebars.registerHelper('threadOwner', (sessionUser, user) => {
+    if(sessionUser === user)
+        return true;
+    return false;
+});
+
 database.connect(url);
 
 app.use(express.static('public'));
-app.use(fileUpload());
 
 app.use(session({
     secret: key,

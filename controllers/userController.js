@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
 const database = require('../models/database.js');
 const User = require('../models/User.js');
+const Thread = require('../models/Thread.js');
+const Comment = require('../models/Comment.js');
 
 const userController = {
     getSignup: (req, res) => {
@@ -100,7 +102,6 @@ const userController = {
                                 emailAddress: email,
                                 username: user,
                                 password: hash,
-                                //displayPicture: `/images/${displayPicture.name}`,
                                 shortDescription: desc
                             };
                             database.insertOne(User, userObj, (success) => {
@@ -246,6 +247,7 @@ const userController = {
 
         if(errors.isEmpty()) {
             const password = req.body.currPass;
+            const sessionUser = req.session.username;
 
             database.findOne(User, {_id: req.session.userID}, null, (user) => {
                 if(user instanceof Object) {
@@ -253,6 +255,15 @@ const userController = {
                         if(result) {
                             database.deleteOne(User, {_id: req.session.userID}, (success) => {
                                 if(success) {
+                                    database.deleteMany(Thread, {username: sessionUser}, (success1) => {
+                                        if(success1) {
+                                            database.deleteMany(Comment, {username: sessionUser}, (success2) => {
+                                                if(success2) {
+                                                    console.log("Successfully deleted user along with posts and comments.")
+                                                }
+                                            });
+                                        }
+                                    });
                                     req.session.destroy(() => {
                                         res.clearCookie('connect.sid');
                                         res.redirect('/userDeleted');

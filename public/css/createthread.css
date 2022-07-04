@@ -14,35 +14,31 @@
   flex: 50%;
 }
 
-.topicArea{
+.titleArea{
   margin: 10px;
   border: 0px;
   padding: 10px;
 }
 
-#threadArea {
+#contentArea {
   display: block;
   margin: 10px;
   border: 0px;
   padding: 10px;
 } 
-
-#imageVideoArea, 
-#linkArea, 
-#pollArea{
+#imageVideoArea{
   display: none;
   margin: 10px;
   border: 0px;
   padding: 10px;
 }
 
-.threadBox {
+.formBox {
   display: flex;
   flex-direction: column;
 }
 
-.threadBox .topicArea input[type=text], 
-.threadBox #linkArea input[type=url] {
+.formBox .titleArea input[type=text]{
   width: 100%;
   padding: 10px 20px;
   display: inline-block;
@@ -51,8 +47,7 @@
   box-sizing: border-box; 
 }
 
-.threadBox #threadArea textarea,
-.threadBox #pollArea textarea {
+.formBox #contentArea textarea{
   resize: none;
   width: 100%;
   height: 150px;
@@ -63,33 +58,18 @@
   box-sizing: border-box;
 }
 
-.threadBox #pollArea input[type=text] { 
-  width: 40%;
-  margin: 5px;
-  display: inline-block;
-  padding-left: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.threadBox #pollArea label,
-.threadBox #pollArea select {
-  margin-left: 25px;
-  float: left;
-}
-
 .tabButton {
   background-color: transparent;
+  padding:5px;
   border: 3px;
+  border-radius: 5px;
   float:none;
 }
 
 .tabButton:hover {
   background-color:#306994;
+  color: white;
 }
-
-
 
 #postBtn, #cancelBtn {
   float: right;
@@ -102,55 +82,18 @@
   text-decoration: none;
   transition-duration: 0.4s;
   background-color: white;
-  color: black;
+  color: rgb(0, 0, 0);
   border: 2px solid #000000;
+  text-align: center;
 }
 
-#addOptionBtn{
-  float: left;
-  font-size: 12px;
-  width: 80px;
-  height: 35px;
-  padding: 5px;
-  cursor: pointer;
-  margin-right: auto;
-  border-radius: 5px;
-  text-decoration: none;
-  transition-duration: 0.4s;
-  background-color: white;
-  color: black;
-  border: 2px solid #000000;
-}
-
-#postBtn:hover, #cancelBtn:hover, #addOptionBtn:hover {
+#postBtn:hover, #cancelBtn:hover {
   background-color: #000000;
   color: white;
 }
 
-#threadHeader {
-  color: #000000;
-  width: 60%;
-  display: block;
-  padding: 0px;
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: border-box;
-}
 
-#topic {
-  font-size: 40px;
-  width: 50%;
-  display: block;
-  padding: 5px 5px 20px 5px;
-}
-
-#topic a {
-  text-decoration: none;
-  cursor: pointer;
-  color: inherit;
-}
-
-#thread {
+#sub-container {
   border-radius: 7px;
   font-size: 15px;
   background-color: #12456d;
@@ -163,3 +106,7 @@
   margin-right: auto;
 }
 
+#error {
+  font-weight: bold;
+  color: red;
+}
