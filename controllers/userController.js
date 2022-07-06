@@ -5,6 +5,9 @@ const User = require('../models/User.js');
 const Thread = require('../models/Thread.js');
 const Comment = require('../models/Comment.js');
 
+const fileUpload = require('express-fileupload');
+const path = require('path');
+
 const userController = {
     getSignup: (req, res) => {
         res.render('signup');
@@ -23,7 +26,18 @@ const userController = {
                     username: userObj.username,
                     description: userObj.shortDescription
                 }
-                res.render('user', data);
+                database.findMany(Thread, {username: data.username}, null, (threadObj) => {
+                    if(threadObj instanceof Object ){
+
+                        res.render('user', {user: data, threads: threadObj})
+                    }
+                    else{
+                        res.render('user', {user: data})
+                    }
+                })
+
+                
+                
             }
             else {
                 req.flash('error_msg', 'User does not exist...');
@@ -84,14 +98,10 @@ const userController = {
     },
 
     postAddUser: (req, res) => {
-        const errors = validationResult(req);
+        //const errors = validationResult(req);
 
-        if(errors.isEmpty()) {
+        //if(errors.isEmpty()) {
             const { user, email, pass, desc} = req.body;
-            console.log(user);
-            console.log(email);
-            console.log(pass);
-            console.log(desc);
             database.findOne(User, {username: user}, null, (userObj) => {
                 if(userObj instanceof Object) {
                     req.flash('error_msg', 'User already exists. Please log in.');
@@ -100,11 +110,16 @@ const userController = {
                 else {
                     bcrypt.genSalt(10, (error, salt) => {
                         bcrypt.hash(pass, salt, (error, hash) => {
+                            console.log(req.files);
+                            const img = req.files.img;
+                            ImgName = img.name;
+                            img.mv(path.resolve(__dirname+'/..','public/images', img.name));
                             var registerUser = {
                                 emailAddress: email,
                                 username: user,
                                 password: hash,
                                 shortDescription: desc,
+                                img: ImgName,
                             };
                             console.log(registerUser);
                             database.insertOne(User, registerUser, (success) => {
@@ -123,13 +138,13 @@ const userController = {
                     });
                 }
             }); 
-         }
+         /*}
         else {
             const messages = errors.array().map((item) => item.msg);
 
             req.flash('error_msg', messages.join(' '));
             res.redirect('/signup');
-        }
+        }*/
     },
 
     postLoginUser: (req, res) => {

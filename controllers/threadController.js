@@ -3,6 +3,9 @@ const database = require('../models/database.js');
 const Thread = require('../models/Thread.js');
 const Comment = require('../models/Comment.js');
 
+const fileUpload = require('express-fileupload');
+const path = require('path');
+
 const threadController = {
     getCreateThread: (req, res) => {
         res.render('createThread');
@@ -60,9 +63,9 @@ const threadController = {
     },
 
     postAddThread: (req, res) => {
-        const errors = validationResult(req);
+        //const errors = validationResult(req);
 
-        if(errors.isEmpty()) {
+        //f(errors.isEmpty()) {
             const { threadTitle, threadContent} = req.body;
 
             database.findOne(Thread, {title: threadTitle}, null, (threadObj) => {
@@ -72,14 +75,19 @@ const threadController = {
                     res.redirect('/createThread');
                 }
                 else {
+                    console.log(req.files);
+                    const img = req.files.img;
+                    ImgName = img.name;
+                    img.mv(path.resolve(__dirname+'/..','public/uploads', img.name));
                     var thread = {
                         dateCreated: Date.now(), 
                         title: threadTitle,
                         username: req.session.username,
                         content: threadContent,
                         lowerCaseTitle: threadTitle.toLowerCase(),
+                        img: ImgName,
                     };
-
+                
                     database.insertOne(Thread, thread, (success) => {
                         if(success) {
                             console.log('Successfully created thread');
@@ -94,13 +102,13 @@ const threadController = {
                     });
                 }
             });
-        }
-        else {
+        //}
+        /*else {
             const messages = errors.array().map((item) => item.msg);
 
             req.flash('error_msg', messages.join(' '));
             res.redirect('/createThread');
-        }
+        }*/
     },
 
     postDeleteThread: (req, res) => {

@@ -19,6 +19,8 @@ const userRouter = require('./routes/user.js');
 const threadRouter = require('./routes/thread.js');
 const commentRouter = require('./routes/comment.js');
 
+const fileUpload = require('express-fileupload');
+
 dotenv.config();
 host = process.env.HOSTNAME;
 port = process.env.PORT || 3000;
@@ -35,7 +37,7 @@ app.engine('hbs', exphbs.engine({
 }));
 
 app.set('view engine', 'hbs');
-
+app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));

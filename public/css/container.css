@@ -19,10 +19,7 @@ body{
     height: 3px;
     border-bottom: 3px solid #12456d;
 }
-.topic {
-  text-decoration: none;
-  color: black;
-}
+
 .link {
     text-decoration: none;
     color: blue;
@@ -46,12 +43,13 @@ body{
 }
 #pageHeader {
   color: #12456d;
-  width: 60%;
+  width: 65%;
   display: flex;
   padding: 5px;
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
+  text-shadow: 1px 1px 2px grey;
 }
 #pageHeader a:nth-child(1) {
   float:left;
