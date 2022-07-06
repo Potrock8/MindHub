@@ -1,0 +1,23 @@
+<link rel="stylesheet" type="text/css" href="/css/createthread.css" />
+<div id="pageHeader">
+        <h1>Edit Comment</h1>
+        <div class="break"></div>
+      </div>
+      <div id="sub-container">
+        <div class="postTab flex">
+          <div class="tabColumn">
+            <h3>Comment</h3>
+          </div>
+        </div>
+        <div class="formBox">
+          <form method="POST" action="/thread/{{comment.threadID}}/postEditComment">
+              <input type="hidden" value="{{comment._id}}" name="commentID" id="commentID" />
+            <div id="contentArea" class="displayBlock">
+              <textarea required id="commentContent" name="commentContent" class="textAreaSize">{{comment.content}}</textarea>
+              {{> messages}}
+              <input type="submit" id="postBtn" value="Edit"></input>
+              <a href="/thread/{{comment.threadID}}" id="cancelBtn">Cancel</a>
+            </div>
+          </form>
+        </div>
+        <br><br>

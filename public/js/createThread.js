@@ -1,44 +1,21 @@
-function checkLength(field) {
-    if(field.length < 3)
+function checkLength(field, length) {
+    if(field.length < length)
         return false;
     else
         return true;
 };
 
-function onDisplay(link){
-    var area;
-
-    if(link === "text") {
-      area = $('#contentArea');
-      $('#imageVideoArea').css('display', 'none');
-      
-    } 
-    else if(link === "imageVideo") {
-      area = $('#imageVideoArea');
-      $('#contentArea').css('display', 'none');
-    } 
-    if(area.css('display') === "none")
-      area.css('display', 'block');
-    else 
-      area.css('display', 'none');
-};
-
 function clearText() {
-    $('threadTitle').val('');
-    $('threadContent').val('');
+    $('#threadTitle').val('');
+    $('#threadContent').val('');
 };
-
-function clearImageVideo() {
-    $('imageVideoArea').val('');
-  }
-
 $(document).ready(() => {
     $('#threadTitle').keyup(() => {
         var title = $('#threadTitle').val();
         var query = {title: title};
         var validLength = false;
 
-        validLength = checkLength(title);
+        validLength = checkLength(title, 3);
 
         if(!validLength) {
             $('#threadTitle').css('border-color', 'red');
@@ -62,11 +39,11 @@ $(document).ready(() => {
         var content = $('#threadContent').val();
         var validLength = false;
 
-        validLength = checkLength(content);
+        validLength = checkLength(content, 1);
 
         if(!validLength) {
             $('#threadContent').css('border-color', 'red');
-            $('#message').text('Thread content must be at least 3 characters long');
+            $('#message').text('Thread content must be at least 1 character long');
         }
         else {
             $('#message').text('')

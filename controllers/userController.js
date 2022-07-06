@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
 const database = require('../models/database.js');
 const User = require('../models/User.js');
+const Thread = require('../models/Thread.js');
+const Comment = require('../models/Comment.js');
 
 const userController = {
     getSignup: (req, res) => {
@@ -86,24 +88,28 @@ const userController = {
 
         if(errors.isEmpty()) {
             const { user, email, pass, desc} = req.body;
-
+            console.log(user);
+            console.log(email);
+            console.log(pass);
+            console.log(desc);
             database.findOne(User, {username: user}, null, (userObj) => {
                 if(userObj instanceof Object) {
-
                     req.flash('error_msg', 'User already exists. Please log in.');
                     res.redirect('/login');
                 }
                 else {
                     bcrypt.genSalt(10, (error, salt) => {
                         bcrypt.hash(pass, salt, (error, hash) => {
-                            var userObj = {
+                            var registerUser = {
                                 emailAddress: email,
                                 username: user,
                                 password: hash,
-                                //displayPicture: `/images/${displayPicture.name}`,
-                                shortDescription: desc
+                                shortDescription: desc,
                             };
-                            database.insertOne(User, userObj, (success) => {
+                            console.log(registerUser);
+                            database.insertOne(User, registerUser, (success) => {
+                                console.log(registerUser);
+                                console.log(success);
                                 if(success) {
                                     req.flash('success_msg', 'You are now registered! Login below.');
                                     res.redirect('/login');
@@ -117,7 +123,7 @@ const userController = {
                     });
                 }
             }); 
-        }
+         }
         else {
             const messages = errors.array().map((item) => item.msg);
 
@@ -246,6 +252,7 @@ const userController = {
 
         if(errors.isEmpty()) {
             const password = req.body.currPass;
+            const sessionUser = req.session.username;
 
             database.findOne(User, {_id: req.session.userID}, null, (user) => {
                 if(user instanceof Object) {
@@ -253,6 +260,15 @@ const userController = {
                         if(result) {
                             database.deleteOne(User, {_id: req.session.userID}, (success) => {
                                 if(success) {
+                                    database.deleteMany(Thread, {username: sessionUser}, (success1) => {
+                                        if(success1) {
+                                            database.deleteMany(Comment, {username: sessionUser}, (success2) => {
+                                                if(success2) {
+                                                    console.log("Successfully deleted user along with posts and comments.")
+                                                }
+                                            });
+                                        }
+                                    });
                                     req.session.destroy(() => {
                                         res.clearCookie('connect.sid');
                                         res.redirect('/userDeleted');

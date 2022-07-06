@@ -2,10 +2,9 @@
     <h1>Edit Profile</h1>
     <div class="break"></div>
     <div class="break"></div>
-    <form id="form" method="post" action="/updateUser/{{session.username}}" enctype="multipart/form-data">    
+    <form id="form" method="post" action="/updateUser/{{session.username}}">    
         <h1>{{session.username}}</h1>
-        <center><img src="/images/user.png" id="userimg" alt="{{session.username}} display picture"></center>
-        <center><input type="file" id="newimg" accept="image/*"/ size="100"></center>
+        <center><img src="/images/user.png" id="userimg" alt="display picture"></center>
         <br />
         <center><h3 id="message">{{> messages}}</h3></center>
         <br />

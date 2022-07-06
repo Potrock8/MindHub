@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="/css/createthread.css" />
 <div id="pageHeader">
     <a href="/createThread">Create a New Thread</a>
     <div class="break"></div>
@@ -5,59 +6,20 @@
 <div id="sub-container">
     <div class="postTab flex">
         <div class="tabColumn">
-            <button onclick="onDisplay('text')" class="tabButton">POST</button>
-        </div>
-        <div class="tabColumn">
-            <button onclick="onDisplay('imageVideo')" class="tabButton">IMAGES & VIDEO</button>
+            <h3>POST</h3>
         </div>
 </div>
 <div class="formBox">
-    <form id="threadForm" method="POST"  action="/addThread" enctype="multipart/form-data">
+    <form method="POST"  action="/addThread" >
         <div class="titleArea">
             <input required type="text" id="threadTitle" name="threadTitle" min="3" max="50" placeholder="Title (3-50 characters)">
         </div>
         <div id="contentArea" class="displayBlock">
-            <textarea required id="threadContent" name="threadContent" class="textAreaSize" min="3" placeholder="What are your thoughts...?"></textarea>
+            <textarea required id="threadContent" name="threadContent" class="textAreaSize" min="1" placeholder="What are your thoughts...?"></textarea>
             <h3 id="message">{{> messages}}</h3>
             <input type="submit" id="postBtn" value="Post" />
             <button id="cancelBtn">Cancel</button>
         </div>
-        <!--
-        <div id="imageVideoArea">
-            <input type="file" name="imageVideo" id="imageVideo"> <br>
-            <button onclick="posted()" id="postBtn"><a href="index.html">Post</a></button>
-            <button onclick="" id="cancelBtn">Cancel</button>
-        </div>
-        -->
     </form>
 </div>
-<!--
-<script type="text/javascript">
-    //remove to a separate file
-    function onDisplay(link){
-      var area;
-      if(link == "text") {
-        area = document.getElementById("contentArea");
-        document.getElementById("imageVideoArea").style.display = "none";
-        
-      } else if(link == "imageVideo") {
-        area = document.getElementById("imageVideoArea");
-        document.getElementById("contentArea").style.display = "none";
-      } 
-      if(area.style.display === "none")
-        area.style.display = "block";
-      else 
-        area.style.display = "none";
-    }
-
-    function clearText() {
-      document.getElementById("threadContent").value = '';
-      document.getElementById("threadTitle").value = '';
-    }
-    
-    function clearImageVideo() {
-      document.getElementById("imageVideo").value = '';
-    }
-
-</script>
- -->
+<br/>

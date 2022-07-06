@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const CommentSchema = mongoose.Schema({
-	dateCreated: {type: Date, default: Date.now(), required: true},
+	dateCreated: {type: Date, required: true},
     threadID: {type: String, required: true},
     username: {type: String, required: true},
     content: {type: String, min: 1, required: true}

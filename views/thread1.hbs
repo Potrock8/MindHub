@@ -1,0 +1,59 @@
+<div id="sub-container">
+    <div id="thread-header">
+        <div id="topic"><a href="/thread/{{thread._id}}">{{thread.title}}</a></div>
+    </div>
+      <div id="thread">
+        <div class="flex">
+          <div class="author">
+            <div class="profile"><a href="/user/{{thread.username}}">{{thread.username}}</a></div>
+          </div>
+
+          <div class="thread-content">
+            <p id="thread-edit">
+              {{thread.content}}
+            </p>
+            <br>
+            <hr>
+            <div class="bottom">
+              <p class="timestamp">
+                <i class="fa fa-clock-o"></i>
+                {{dateFormat thread.dateCreated "L, LT "}}
+              </p>
+              {{#if session.isLoggedIn}}
+              <a href="/getEditThread/{{thread._id}}" class="edit-btn" id="editBtn">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </a>
+              <form action="/deleteThread/{{thread._id}}" method="POST">
+              <button type="submit" class="delete-btn" id="deleteBtn">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+              </button>
+              </form>
+                <button class="reply-btn" id="replyBtn">Reply</button>
+            </div>
+            <div class="write-comment" id="write-comment">
+              <div class="block">
+                <form method="POST" action="/thread/{{thread._id}}/addComment">
+                  <input type="hidden" value="{{thread._id}}" name="threadID" id="threadID" />
+                  <textarea id="comment-text" name="commentContent" placeholder="What are your thoughts...?"
+                    ></textarea>
+                    {{> messages}}
+                  <button type="submit" id="submitBtn">Submit</button>
+                  <button id="cancelBtn">Cancel</button>
+                </form>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comment-section">
+        Comment Section
+      </div>
+
+      <div class="comment-main-container" id="commentBox">
+        {{#each comments}}
+          {{> comment}}
+        {{/each}}
+      </div>
+</div>

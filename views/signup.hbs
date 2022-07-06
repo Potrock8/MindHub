@@ -1,9 +1,7 @@
 <section id="info">
     <h1>Sign Up</h1>
-    <div class="break"></div>
-    <div class="break"></div>
     <h3 id="message">{{> messages}}</h3>
-    <form id="infoForm" method="post" action="/addUser" enctype="multipart/form-data">
+    <form id="infoForm" method="post" action="/addUser">
         <label for="user" id="userLabel"><strong>Username*</strong></label>
         <input type="text" id="user" name="user" placeholder="8-16 characters" maxlength="16"/>
         <br />
@@ -15,9 +13,6 @@
         <br />
         <label for="confirmPass" id="confirmLabel"><strong>Confirm Password*</strong></label>
         <input type="password" id="confirmPass" name="confirmPass" placeholder="Password should match" maxlength="16"/>
-        <br />
-        <label for="pic"><strong>Picture</strong></label>
-        <input type="file" id="pic" name="pic" accept="image" />
         <br />
         <label for="desc"><strong>Short Description</strong></label>
         <br />

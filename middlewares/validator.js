@@ -75,7 +75,7 @@ const addThreadValidation = [
         .isLength({ min: 3 }).withMessage('Thread title must be at least 3 characters long.'),
 
     body('threadContent').not().isEmpty().withMessage('Thread content is required.')
-        .isLength({ min: 3 }).withMessage('Thread content must be at least 3 characters long.')
+        .isLength({ min: 1 }).withMessage('Thread content must be at least 1 characters long.')
 ];
 
 module.exports = { signupValidation, loginValidation, updateUserValidation, deleteUserValidation, addThreadValidation };
