@@ -3,16 +3,27 @@ const database = require('../models/database.js');
 const Thread = require('../models/Thread.js');
 const Comment = require('../models/Comment.js');
 
+const fileUpload = require('express-fileupload');
+const path = require('path');
+const session = require('express-session');
+
 const threadController = {
     getCreateThread: (req, res) => {
         res.render('createThread');
     },
 
     getThread: (req, res) => {
+        var threadOwner = false;
+        var image = false;
+
         database.findOne(Thread, {_id: req.params.id},null, (found) => {
             database.findMany(Comment, {threadID: req.params.id }, null, (found2) =>{
-             data = {thread: found, comments: found2};
-             res.render('thread1', data);
+                if(found.username === req.session.username)
+                    threadOwner = true;
+                if(found.img !== '')
+                    image = true;
+                data = {thread: found, isThreadOwner: threadOwner, hasImage: image, comments: found2};
+                res.render('thread1', data);
             });
         });
     },
@@ -39,7 +50,7 @@ const threadController = {
         database.findMany(Thread, query, null, (found) => {
             console.log(found);
             if(found){
-                res.render('search', {results: found});
+                res.render('search', {threads: found});
             }
             else{
                 req.flash('error_msg', 'No results...')
@@ -64,6 +75,8 @@ const threadController = {
 
         if(errors.isEmpty()) {
             const { threadTitle, threadContent} = req.body;
+            var img;
+            var imgName = '';
 
             database.findOne(Thread, {title: threadTitle}, null, (threadObj) => {
                 if(threadObj instanceof Object) {
@@ -72,14 +85,20 @@ const threadController = {
                     res.redirect('/createThread');
                 }
                 else {
+                    if(req.files !== null) {
+                        img = req.files.img;
+                        imgName = img.name;
+                        img.mv(path.resolve(__dirname + '/..','public/images/threads', imgName));
+                    }
                     var thread = {
                         dateCreated: Date.now(), 
                         title: threadTitle,
                         username: req.session.username,
                         content: threadContent,
                         lowerCaseTitle: threadTitle.toLowerCase(),
+                        img: imgName
                     };
-
+                
                     database.insertOne(Thread, thread, (success) => {
                         if(success) {
                             console.log('Successfully created thread');
@@ -121,14 +140,23 @@ const threadController = {
     },
 
     postEditThread: (req,res) => {
+        var img;
+        var imgName = '';
+
         database.findOne(Thread, {_id: req.body.threadID}, null, (found1) => {
+            if(req.files !== null) {
+                img = req.files.img;
+                imgName = img.name;
+                img.mv(path.resolve(__dirname + '/..', 'public/images/threads', imgName));
+            }
             if(found1 instanceof Object) {
                 var thread = {
                     dateCreated: found1.dateCreated,
                     title: req.body.threadTitle,
                     username: req.session.username,
                     content: req.body.threadContent,
-                    lowerCaseTitle: req.body.threadTitle.toLowerCase()
+                    lowerCaseTitle: req.body.threadTitle.toLowerCase(),
+                    img: imgName
                 }
                 database.updateOne(Thread, {_id: found1._id}, thread, (found2) => {
                     if(found2) {

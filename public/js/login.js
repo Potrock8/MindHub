@@ -1,4 +1,4 @@
-function checkLength(field) {
+function checkLoginLength(field) {
     if(field.length < 8)
         return false;
     else
@@ -10,7 +10,7 @@ $(document).ready(() => {
         var username = $('#userLog').val();
         var validLength = false;
 
-        validLength = checkLength(username);
+        validLength = checkLoginLength(username);
 
         if(!validLength) {
             $('#message').text('Usernames are between 8-16 characters.');
@@ -28,7 +28,7 @@ $(document).ready(() => {
         var password = $('#password').val();
         var validLength = false;
 
-        validLength = checkLength(password);
+        validLength = checkLoginLength(password);
 
         if(!validLength) {
             $('#message').text('Passwords are between 8-16 characters.');

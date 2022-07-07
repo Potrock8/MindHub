@@ -11,6 +11,7 @@ table{
 .forum-header{
   color: white;
   background-color: #12456d;
+  text-shadow: 1px 1px 2px black;
 }
 tr{
   border: solid 1px rgb(0, 0, 0);
@@ -33,10 +34,20 @@ tr{
 td{
   padding:10px;
 }
-.tr td:nth-child(1){
+tr td:nth-child(1){
   text-align: left;
+  text-decoration: none;
 }
 tr td:nth-child(2),tr td:nth-child(3){
   text-align: center;
   width: 25%;
 } 
+.user a{
+  text-decoration: none;
+  color: black;
+}
+.topic a{
+  text-decoration: none;
+  color: black;
+  text-shadow: 1px 1px 2px grey;
+}

@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
 
-const Comment = require('./Comment.js');
-const Thread = require('./Thread.js');
-const User = require('./User.js')
 
 const options = { useUnifiedTopology: true,
 					useNewUrlParser: true

@@ -10,13 +10,13 @@
           </div>
         </div>
         <div class="formBox">
-          <form id="threadForm" method="POST" action="/thread/{{comment.threadID}}/postEditComment">
+          <form method="POST" action="/thread/{{comment.threadID}}/postEditComment">
               <input type="hidden" value="{{comment._id}}" name="commentID" id="commentID" />
             <div id="contentArea" class="displayBlock">
-              <textarea required id="commentContent" name="commentContent" class="textAreaSize">{{comment.content}}</textarea>
-              {{> messages}}
+              <textarea id="commentContent" name="commentContent" class="textAreaSize">{{comment.content}}</textarea>
+              <h3 id="message">{{> messages}}</h3>
               <input type="submit" id="postBtn" value="Edit"></input>
-              <a href="/thread/{{comment.threadID}}/getEditComment/{{comment._id}}" id="cancelBtn">Cancel</a>
+              <a href="/thread/{{comment.threadID}}" id="cancelBtn">Cancel</a>
             </div>
           </form>
         </div>

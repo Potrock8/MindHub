@@ -1,12 +1,31 @@
 <section id="profile">
-    <img src="/images/user.png" id="profileImg" alt="{{username}} display picture"/>
+    <img src="/images/users/{{user.img}}" id="profileImg" alt="{{user.username}} display picture"/>
     <div id="profile-name">
-        <h1>{{username}}</h1>
-        {{#sameUser session.username username }}
+        <h1>{{user.username}}</h1>
+        {{#sameUser session.username user.username}}
         {{/sameUser}}
     </div>
     <div id="userDesc">
-        <p>{{description}}</p>
+        <p>{{user.description}}</p>
     </div>
+    
 </section>
 <br>
+<div id="pageHeader">
+    <a href="/user/{{user.username}}">{{user.username}}'s Threads</a>
+    {{#if session.isLoggedIn}}
+        <a href="/createThread" class="newpost">New Thread &nbsp;<i class="fa fa-plus-square" aria-hidden="true"></i></a>
+    {{/if}}
+</div>
+<div class="block">
+    <table>
+        <tr class="forum-header">
+            <td>Forum Topics</td>
+            <td>Published By</td>
+            <td>Date Published</td>
+        </tr>
+        {{#each threads}}
+            {{> thread}}
+        {{/each}}
+    </table>
+</div>

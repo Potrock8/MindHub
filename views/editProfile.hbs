@@ -1,11 +1,10 @@
 <section id="settings">
     <h1>Edit Profile</h1>
-    <div class="break"></div>
-    <div class="break"></div>
-    <form id="form" method="post" action="/updateUser/{{session.username}}">    
+    <form id="form" method="post" action="/updateUser/{{session.username}}" enctype="multipart/form-data">    
         <h1>{{session.username}}</h1>
-        <center><img src="/images/user.png" id="userimg" alt="display picture"></center>
-        <br />
+        <center><img src="/images/users/{{img}}" id="userimg" alt="display picture"></center>
+        <center><label for="editImg"><strong>Profile Picture (Optional)</strong></label></center>
+        <center><input type="file" id="editImg" name="editImg" accept="image/*"></center>
         <center><h3 id="message">{{> messages}}</h3></center>
         <br />
         <div id="infoEdit">

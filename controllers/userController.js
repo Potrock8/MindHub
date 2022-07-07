@@ -5,6 +5,9 @@ const User = require('../models/User.js');
 const Thread = require('../models/Thread.js');
 const Comment = require('../models/Comment.js');
 
+const fileUpload = require('express-fileupload');
+const path = require('path');
+
 const userController = {
     getSignup: (req, res) => {
         res.render('signup');
@@ -19,11 +22,15 @@ const userController = {
 
         database.findOne(User, query, null, (userObj) => {
             if(userObj instanceof Object) {
-                var data = {
-                    username: userObj.username,
-                    description: userObj.shortDescription
-                }
-                res.render('user', data);
+                database.findMany(Thread, {username: userObj.username}, null, (threadObj) => {
+                    if(threadObj instanceof Object){
+                        res.render('user', {user: userObj, threads: threadObj});
+                    }
+                    else{
+                        res.render('user', {user: userObj});
+                    }
+                });
+   
             }
             else {
                 req.flash('error_msg', 'User does not exist...');
@@ -39,7 +46,8 @@ const userController = {
             if(userObj instanceof Object) {
                 var data = {
                     username: userObj.username,
-                    description: userObj.shortDescription
+                    description: userObj.shortDescription,
+                    img: userObj.img
                 }
                 res.render('editProfile', data);
             }
@@ -56,7 +64,8 @@ const userController = {
         database.findOne(User, query, null, (userObj) => {
             if(userObj instanceof Object) {
                 var data = {
-                    username: userObj.username
+                    username: userObj.username,
+                    img: userObj.img
                 }
                 res.render('delete', data);
             }
@@ -85,26 +94,37 @@ const userController = {
 
     postAddUser: (req, res) => {
         const errors = validationResult(req);
-
+        
         if(errors.isEmpty()) {
             const { user, email, pass, desc} = req.body;
+            var img;
+            var imgName = '';
 
             database.findOne(User, {username: user}, null, (userObj) => {
                 if(userObj instanceof Object) {
-
                     req.flash('error_msg', 'User already exists. Please log in.');
                     res.redirect('/login');
                 }
                 else {
                     bcrypt.genSalt(10, (error, salt) => {
                         bcrypt.hash(pass, salt, (error, hash) => {
-                            var userObj = {
+                            if(req.files !== null) {
+                                img = req.files.img;
+                                imgName = img.name;
+                                img.mv(path.resolve(__dirname + '/..', 'public/images/users', imgName));
+                            }
+
+                            var registerUser = {
                                 emailAddress: email,
                                 username: user,
                                 password: hash,
-                                shortDescription: desc
+                                shortDescription: desc,
+                                img: imgName
                             };
-                            database.insertOne(User, userObj, (success) => {
+                            console.log(registerUser);
+                            database.insertOne(User, registerUser, (success) => {
+                                console.log(registerUser);
+                                console.log(success);
                                 if(success) {
                                     req.flash('success_msg', 'You are now registered! Login below.');
                                     res.redirect('/login');
@@ -175,9 +195,12 @@ const userController = {
     postUpdateUser: (req, res) => {
         const errors = validationResult(req);
 
+
         if(errors.isEmpty()) {
             var { userEdit, currPass, newPass, descEdit} = req.body;
-            console.log(userEdit);
+            var img;
+            var imgName = '';
+            console.log(req.files)
             database.findOne(User, {_id: req.session.userID}, null, (userObj) => {
                 if(userObj instanceof Object) {
                     console.log(userObj.username);
@@ -198,13 +221,19 @@ const userController = {
         
                                     bcrypt.genSalt(10, (error, salt) => {
                                         bcrypt.hash(newPass, salt, (error, hash) => {
+                                            if(req.files !== null) {
+                                                img = req.files.editImg;
+                                                imgName = img.name;
+                                                img.mv(path.resolve(__dirname + '/..', 'public/images/users', imgName));
+                                            }
+
                                             const update = {
                                                 dateCreated: userObj.dateCreated,
                                                 emailAddress: userObj.emailAddress,
                                                 username: userEdit,
                                                 password: hash,
-                                                //displayPicture: {type: String, required: false},
-                                                shortDescription: descEdit
+                                                shortDescription: descEdit,
+                                                img: imgName
                                             }
                                             database.updateOne(User, {_id: req.session.userID}, update, (success) => {
                                                 if(success) {

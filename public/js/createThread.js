@@ -1,4 +1,4 @@
-function checkLength(field, length) {
+function checkThreadLength(field, length) {
     if(field.length < length)
         return false;
     else
@@ -15,7 +15,7 @@ $(document).ready(() => {
         var query = {title: title};
         var validLength = false;
 
-        validLength = checkLength(title, 3);
+        validLength = checkThreadLength(title, 3);
 
         if(!validLength) {
             $('#threadTitle').css('border-color', 'red');
@@ -39,7 +39,7 @@ $(document).ready(() => {
         var content = $('#threadContent').val();
         var validLength = false;
 
-        validLength = checkLength(content, 1);
+        validLength = checkThreadLength(content, 1);
 
         if(!validLength) {
             $('#threadContent').css('border-color', 'red');

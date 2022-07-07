@@ -1,6 +1,7 @@
 <div id="sub-container">
     <div id="thread-header">
         <div id="topic"><a href="/thread/{{thread._id}}">{{thread.title}}</a></div>
+        <center><h2 id="message">{{> messages}}</h2></center>
     </div>
       <div id="thread">
         <div class="flex">
@@ -12,6 +13,9 @@
             <p id="thread-edit">
               {{thread.content}}
             </p>
+            {{#if hasImage}}
+              <img src="/images/threads/{{thread.img}}" id="threadImg">
+            {{/if}}
             <br>
             <hr>
             <div class="bottom">
@@ -20,23 +24,23 @@
                 {{dateFormat thread.dateCreated "L, LT "}}
               </p>
               {{#if session.isLoggedIn}}
-              <a href="/getEditThread/{{thread._id}}" class="edit-btn" id="editBtn">
-                <i class="fa fa-pencil" aria-hidden="true"></i>
-              </a>
-              <form action="/deleteThread/{{thread._id}}" method="POST">
-              <button type="submit" class="delete-btn" id="deleteBtn">
-                <i class="fa fa-trash-o" aria-hidden="true"></i>
-              </button>
-              </form>
+                {{#if isThreadOwner}}
+                  <a href="/getEditThread/{{thread._id}}" class="edit-btn" id="editBtn">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                  </a>
+                  <form action="/deleteThread/{{thread._id}}" method="POST">
+                  <button type="submit" class="delete-btn" id="deleteBtn">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                  </button>
+                  </form>
+                  {{/if}}
                 <button class="reply-btn" id="replyBtn">Reply</button>
             </div>
             <div class="write-comment" id="write-comment">
               <div class="block">
                 <form method="POST" action="/thread/{{thread._id}}/addComment">
                   <input type="hidden" value="{{thread._id}}" name="threadID" id="threadID" />
-                  <textarea id="comment-text" name="commentContent" placeholder="What are your thoughts...?"
-                    ></textarea>
-                    {{> messages}}
+                  <textarea id="comment-text" name="commentContent" placeholder="What are your thoughts...?"></textarea>
                   <button type="submit" id="submitBtn">Submit</button>
                   <button id="cancelBtn">Cancel</button>
                 </form>

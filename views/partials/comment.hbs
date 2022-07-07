@@ -13,8 +13,7 @@
       <i class="fa fa-clock-o"></i>
       {{dateFormat dateCreated "L, LT "}}
     </p>
-    
-    <a href="/thread/{{threadID}}/editComment/{{_id}}" class="edit-btn" id="cmtEditBtn">
+    <a href="/thread/{{threadID}}/getEditComment/{{_id}}" class="edit-btn" id="cmtEditBtn">
       <i class="fa fa-pencil" aria-hidden="true"></i>
     </a>
     <form action="/thread/{{threadID}}/deleteComment" method="POST">
@@ -23,6 +22,5 @@
       <i class="fa fa-trash-o" aria-hidden="true"></i>
     </button>
     </form>
-
   </div>
 </div>

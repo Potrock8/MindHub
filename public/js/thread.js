@@ -4,8 +4,6 @@ $(document).ready(() => {
       if ($('#write-comment').css('display') === 'block') {
           // Comment is visible. hide it
           $('#write-comment').css('display','none');
-          // erase text area
-          $('#comment-text').val('');
         }
         else{
           // Comment is hidden. show it
@@ -25,8 +23,6 @@ $(document).ready(() => {
   
   $('#submitBtn').click(() => {
       if($('#comment-text').val() === '')
-          $('#message').text('Comment field must not be empty if you wish to post a comment.');
-      else
-          $('#comment-text').val('');
+          $('#message').text('Comment field must not be empty if you wish to post a comment.');     
   });
 });

@@ -1,4 +1,4 @@
-function checkLength(field) {
+function checkDeleteLength(field) {
     if(field.length < 8)
         return false;
     else
@@ -10,7 +10,7 @@ $(document).ready(() => {
         var password = $('#currPass').val();
         var validLength = false;
 
-        validLength = checkLength(password);
+        validLength = checkDeleteLength(password);
 
         if(!validLength) {
             $('#message').text('Please enter your current password.');

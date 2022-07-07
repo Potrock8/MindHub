@@ -1,11 +1,11 @@
-function checkLength(field) {
+function checkEditLength(field) {
     if((field.length > 0) && (field.length < 8))
         return false;
     else
         return true;
 };
 
-function checkAlphanumeric(pass) {
+function checkEditAlphanumeric(pass) {
     var lowercase = /[a-z]/;
     var uppercase = /[A-Z]/;
     var numbers = /[0-9]/;
@@ -28,7 +28,7 @@ $(document).ready(() => {
         var query = {username: username};
         var validLength = false;
 
-        validLength = checkLength(username);
+        validLength = checkEditLength(username);
 
         if(!validLength) {
             $('#message').text('New username must be at least 8 characters long.');
@@ -56,7 +56,7 @@ $(document).ready(() => {
         var newPass = $('#newPass').val();
         var validLength = false;
 
-        validLength = checkLength(newPass);
+        validLength = checkEditLength(newPass);
 
         if(!validLength){
             $('#message').text('New password must be at least 8 characters long.');
@@ -73,7 +73,7 @@ $(document).ready(() => {
                 $('#message').text('');
                 $('#newPassLabel').css('color', 'black');
                 $('#newPass').css('border-color', '#ddd');
-                checkAlphanumeric(newPass);
+                checkEditAlphanumeric(newPass);
             }
         }
 

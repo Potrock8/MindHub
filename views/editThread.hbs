@@ -11,14 +11,14 @@
           </div>
         </div>
         <div class="formBox">
-          <form id="threadForm" method="POST"  action="/postEditThread/{{thread._id}}/">
+          <form id="threadForm" method="POST"  action="/postEditThread/{{thread._id}}/" enctype="multipart/form-data">
             <div class="titleArea">
               <input type="hidden" value="{{thread._id}}" name="threadID" id="threadID" />
-              <input required type="text" id="threadTitle" name="threadTitle"  value="{{thread.title}}">
+              <input type="text" id="threadTitle" name="threadTitle"  value="{{thread.title}}">
             </div>
             <div id="contentArea" class="displayBlock">
-              <textarea required id="threadContent" name="threadContent" class="textAreaSize">{{thread.content}}</textarea>
-              {{> messages}}
+              <textarea id="threadContent" name="threadContent" class="textAreaSize">{{thread.content}}</textarea>
+              <h3 id="message">{{> messages}}</h3>
               <input type="submit" id="postBtn" value="Edit"></input>
               <a href="/thread/{{thread._id}}" id="cancelBtn">Cancel</a>
             </div>

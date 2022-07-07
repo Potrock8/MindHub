@@ -7,10 +7,12 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     margin: auto;
 }
-#profile > img {
-    width: 25%;
+#profileImg {
+    width: 154.8px;
+    height: 154.8px;;
     float: right;
     border: 3px solid #2d71a5;
+    box-shadow: 0px 5px 30px #2d71a5;
     border-radius: 100%;
     margin: 10px 10px 0 15px;
 }
@@ -20,6 +22,7 @@
     border-bottom: 3px solid #2d71a5;
     background-color: #12456d;
     border-radius: 11px 11px 0 0;
+    box-shadow: 0px 5px 30px #2d71a5;
 }
 #profile-name > h1 {
     width: 69%;
@@ -27,6 +30,7 @@
     font-size: 48px;
     text-align: left;
     padding: 13px 0 3px 10px;
+    text-shadow: 1px 1px 2px black;
 }
 #userDesc > p{
     font-size: 18px;
@@ -35,13 +39,14 @@
     padding: 13px;
 }
 #editProfile, #deleteUser {
+    font-size: 13px;
     margin-left: 13px;
     padding: 1px;
     text-decoration: none;
     background-color: white;
     border-radius: 6px;
     border: 2px solid #2d71a5;
-    color: #2d71a5;
+    color: black;
 }
 #editProfile:hover, #deleteUser:hover{
     background-color: whitesmoke;

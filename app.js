@@ -19,6 +19,8 @@ const userRouter = require('./routes/user.js');
 const threadRouter = require('./routes/thread.js');
 const commentRouter = require('./routes/comment.js');
 
+const fileUpload = require('express-fileupload');
+
 dotenv.config();
 host = process.env.HOSTNAME;
 port = process.env.PORT || 3000;
@@ -36,9 +38,11 @@ app.engine('hbs', exphbs.engine({
 
 app.set('view engine', 'hbs');
 
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(fileUpload());
 
-
-//app.use(expressValidator.expressValidator());
 handlebars.registerHelper('sameUser', (sessionUser, user, options) => {
     if(sessionUser === user)
         return '<a id="editProfile" href="/editProfile/' + sessionUser + '">Edit Profile</a>\n' +
@@ -46,7 +50,7 @@ handlebars.registerHelper('sameUser', (sessionUser, user, options) => {
     return options.inverse(this);
 });
 
-handlebars.registerHelper('threadOwner', (sessionUser, user) => {
+handlebars.registerHelper('isCommentOwner', (sessionUser, user) => {
     if(sessionUser === user)
         return true;
     return false;
@@ -54,7 +58,7 @@ handlebars.registerHelper('threadOwner', (sessionUser, user) => {
 
 database.connect(url);
 
-
+app.use(express.static('public'));
 
 app.use(session({
     secret: key,
@@ -73,9 +77,6 @@ app.use((req, res, next) => {
     res.locals.session = req.session;
     next();
 }); 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static('public'));
 
 app.use('/', authRouter);
 app.use('/', indexRouter);

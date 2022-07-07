@@ -70,12 +70,18 @@ const deleteUserValidation = [
         .isLength({ min: 8 }).withMessage('Passwords are at least 8 characters long.'),
 ];
 
-const addThreadValidation = [
+const threadValidation = [
     body('threadTitle').not().isEmpty().withMessage('Thread title is required.')
         .isLength({ min: 3 }).withMessage('Thread title must be at least 3 characters long.'),
 
     body('threadContent').not().isEmpty().withMessage('Thread content is required.')
-        .isLength({ min: 1 }).withMessage('Thread content must be at least 1 characters long.')
+        .isLength({ min: 1 }).withMessage('Thread content must be at least 1 character long.')
 ];
 
-module.exports = { signupValidation, loginValidation, updateUserValidation, deleteUserValidation, addThreadValidation };
+const commentValidation = [
+    body('commentContent').not().isEmpty().withMessage('Comment is required if you wish to reply to a post.')
+        .isLength({ min: 1 }).withMessage('Comment must be at least 1 character long.')
+]
+
+module.exports = { signupValidation, loginValidation, updateUserValidation, 
+                    deleteUserValidation, threadValidation, commentValidation };

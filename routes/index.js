@@ -8,6 +8,8 @@ router.get('/', (req, res) => {
         if(found){
             res.render('index', {threads: found});
         }
+        else
+            res.render('index');
     });
 });
 
