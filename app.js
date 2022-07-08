@@ -19,14 +19,14 @@ const userRouter = require('./routes/user.js');
 const threadRouter = require('./routes/thread.js');
 const commentRouter = require('./routes/comment.js');
 
+const app = new express();
+
 const fileUpload = require('express-fileupload');
 
 dotenv.config();
 port = process.env.PORT || 3000;
 url = process.env.DB_URL || 'mongodb://localhost:27017/MindHub';
 key = process.env.SESSION_KEY;
-
-const app = new express();
 
 app.engine('hbs', exphbs.engine({
     extname: '.hbs',
@@ -48,13 +48,11 @@ handlebars.registerHelper('sameUser', (sessionUser, user, options) => {
     return options.inverse(this);
 });
 
-database.connect(url);
-
 app.use(express.static('public'));
 
 app.use(session({
     secret: key,
-    store: new MongoStore({mongoUrl: url}),
+    store: new MongoStore({mongooseConnection: database.connect(url)}),
     resave: false,
     saveUninitialized: true,
     cookie: {secure: false, maxAge: 1000 * 60 * 60 * 24 * 7},
