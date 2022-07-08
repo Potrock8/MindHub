@@ -50,9 +50,11 @@ handlebars.registerHelper('sameUser', (sessionUser, user, options) => {
 
 app.use(express.static('public'));
 
+database.connect(url);
+
 app.use(session({
     secret: key,
-    store: new MongoStore({mongooseConnection: database.connect(url)}),
+    store: MongoStore.create({client: database),
     resave: false,
     saveUninitialized: true,
     cookie: {secure: false, maxAge: 1000 * 60 * 60 * 24 * 7},
