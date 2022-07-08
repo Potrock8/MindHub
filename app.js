@@ -22,9 +22,8 @@ const commentRouter = require('./routes/comment.js');
 const fileUpload = require('express-fileupload');
 
 dotenv.config();
-host = process.env.HOSTNAME;
 port = process.env.PORT || 3000;
-url = process.env.DB_URL;
+url = process.env.DB_URL || 'mongodb://localhost:27017/MindHub';
 key = process.env.SESSION_KEY;
 
 const app = new express();
@@ -38,7 +37,6 @@ app.engine('hbs', exphbs.engine({
 
 app.set('view engine', 'hbs');
 
-app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(fileUpload());
@@ -78,6 +76,6 @@ app.use('/', userRouter);
 app.use('/', threadRouter);
 app.use('/', commentRouter);
 
-const server = app.listen(port, host, () => {
-    console.log(`Server is running at: http://${host}:${port}`);
+const server = app.listen(port, () => {
+    console.log(`Server is running at port ${port}.`);
 });

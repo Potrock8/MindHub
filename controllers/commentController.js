@@ -1,9 +1,12 @@
+const { validationResult } = require('express-validator');
 const database = require('../models/database.js');
 const Comment = require('../models/Comment.js');
 
 const commentController = {
     postAddComment: (req, res) => {
-        
+        const errors = validationResult(req);
+
+        if(errors.isEmpty()) {
            var comment = {
                 username: req.session.username,
                 content: req.body.commentContent,
@@ -19,7 +22,14 @@ const commentController = {
                     req.flash('error_msg', 'Encountered an error while creating the comment. Please try again.');
                     res.redirect(`/thread/${comment.threadID}`);
                 }
-            })
+            });
+        }
+        else {
+            const messages = errors.array().map((item) => item.msg);
+
+            req.flash('error_msg', messages.join(' '));
+            res.redirect(`/thread/${req.body.threadID}`);
+        }
     },
 
     getEditComment: (req, res) => {
@@ -36,29 +46,39 @@ const commentController = {
     },
 
     postEditComment: (req,res) => {
-        var comment = {
-            _id: req.params.commentid,
-            content: req.body.commentContent
-        }
+        const errors = validationResult(req);
 
-        database.findOne(Comment, { _id: comment._id}, null, (found1) => {
-            if(found1 instanceof Object) {
-                database.updateOne(Comment, { _id: comment._id}, comment, (found2) => {
-                    if(found2) {
-                        req.flash('success_msg', 'Successfully updated the comment.');
-                        res.redirect(`/thread/${found1.threadID}`);
-                    }
-                    else {
-                        req.flash('error_msg', 'Encountered an error while updating the comment. Please try again.');
-                        res.redirect(`/thread/${found1.threadID}`);
-                    }
-                });
+        if(errors.isEmpty()) {
+            var comment = {
+                _id: req.params.commentid,
+                content: req.body.commentContent
             }
-            else {
-                req.flash('error_msg', 'Comment not found. Please try again.');
-                res.redirect(`/thread/${req.params.id}/getEditComment/${req.params.commentid}`);
-            }
-        });
+
+            database.findOne(Comment, { _id: comment._id}, null, (found1) => {
+                if(found1 instanceof Object) {
+                    database.updateOne(Comment, { _id: comment._id}, comment, (found2) => {
+                        if(found2) {
+                            req.flash('success_msg', 'Successfully updated the comment.');
+                            res.redirect(`/thread/${found1.threadID}`);
+                        }
+                        else {
+                            req.flash('error_msg', 'Encountered an error while updating the comment. Please try again.');
+                            res.redirect(`/thread/${found1.threadID}`);
+                        }
+                    });
+                }
+                else {
+                    req.flash('error_msg', 'Comment not found. Please try again.');
+                    res.redirect(`/thread/${req.params.id}/getEditComment/${req.params.commentid}`);
+                }
+            });
+        }
+        else {
+            const messages = errors.array().map((item) => item.msg);
+
+            req.flash('error_msg', messages.join(' '));
+            res.redirect(`/thread/${req.params.id}/getEditComment/${req.params.commentid}`);
+        }
     },
 
     postDeleteComment: (req, res) => {
