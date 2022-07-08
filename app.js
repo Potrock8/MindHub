@@ -25,6 +25,7 @@ const fileUpload = require('express-fileupload');
 
 dotenv.config();
 port = process.env.PORT || 3000;
+url = process.env.DB_URL || 'mongodb://localhost:27017/MindHub';
 key = process.env.SESSION_KEY;
 
 app.engine('hbs', exphbs.engine({
@@ -49,11 +50,11 @@ handlebars.registerHelper('sameUser', (sessionUser, user, options) => {
 
 app.use(express.static('public'));
 
-database.connect();
+database.connect(url);
 
 app.use(session({
     secret: key,
-    store: MongoStore.create({client: database}),
+    store: new MongoStore({mongoUrl: url}),
     resave: false,
     saveUninitialized: true,
     cookie: {secure: false, maxAge: 1000 * 60 * 60 * 24 * 7},
