@@ -154,31 +154,39 @@ const threadController = {
         const errors = validationResult(req);
 
         if(errors.isEmpty()) {
-            database.findOne(Thread, { _id: req.body.threadID }, null, (found1) => {
-                if(found1 instanceof Object) {
-                    var thread = {
-                        dateCreated: found1.dateCreated,
-                        title: req.body.threadTitle,
-                        username: req.session.username,
-                        content: req.body.threadContent,
-                        lowerCaseTitle: req.body.threadTitle.toLowerCase(),
-                        img: found1.img
-                    }
-                    database.updateOne(Thread, {_id: found1._id}, thread, (found2) => {
-                        if(found2) {
-                            req.flash('success_msg', 'Successfully updated the thread.');
-                            res.redirect(`/thread/${found1._id}`);
+            database.findOne(Thread, {title: req.body.threadTitle}, null, (threadObj) => {
+                if(threadObj instanceof Object) {
+                    req.flash('error_msg', 'Thread title already exists. Please try a different thread title.');
+                    res.redirect(`/getEditThread/${req.body.threadID}`);
+                }
+                else{
+                    database.findOne(Thread, { _id: req.body.threadID }, null, (found1) => {
+                        if(found1 instanceof Object) {
+                            var thread = {
+                                dateCreated: found1.dateCreated,
+                                title: req.body.threadTitle,
+                                username: req.session.username,
+                                content: req.body.threadContent,
+                                lowerCaseTitle: req.body.threadTitle.toLowerCase(),
+                                img: found1.img
+                            }
+                            database.updateOne(Thread, {_id: found1._id}, thread, (found2) => {
+                                if(found2) {
+                                    req.flash('success_msg', 'Successfully updated the thread.');
+                                    res.redirect(`/thread/${found1._id}`);
+                                }
+                                else {
+                                    req.flash('error_msg', 'Encountered an issue while updating the thread. Please try again.');
+                                    res.redirect(`/thread/${found1._id}`);
+                                }
+                            });
                         }
                         else {
                             req.flash('error_msg', 'Encountered an issue while updating the thread. Please try again.');
                             res.redirect(`/thread/${found1._id}`);
-                        }
+                        }       
                     });
                 }
-                else {
-                    req.flash('error_msg', 'Encountered an issue while updating the thread. Please try again.');
-                    res.redirect(`/thread/${found1._id}`);
-                }       
             });
         }
         else {
