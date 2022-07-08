@@ -6,7 +6,7 @@ const options = { useUnifiedTopology: true,
 };
 
 const database = {
-	connect: (url) => {
+	connect: () => {
 		mongoose.connect(url, options, (error) => {
 			if(error) throw error;
 			console.log(`Connected to ${url}`);
