@@ -211,63 +211,51 @@ const userController = {
 
 
         if(errors.isEmpty()) {
-            var { userEdit, currPass, newPass, descEdit} = req.body;
+            var { currPass, newPass, descEdit} = req.body;
             var img;
             var imgName = '';
-            console.log(req.files)
             database.findOne(User, {_id: req.session.userID}, null, (userObj) => {
                 if(userObj instanceof Object) {
-                    console.log(userObj.username);
-                    database.findOne(User, {username: userEdit}, null, (user) => {
-                        if((user instanceof Object) && (user.username === userEdit)) {
-                            req.flash('error_msg', 'User already exists. Please enter a different username.');
-                            res.redirect('/editProfile/' + req.session.username);
+                    bcrypt.compare(currPass, userObj.password, (error, result) => {
+                        if(result) {
+                            if(newPass === '')
+                                newPass = currPass;
+                            if(descEdit === userObj.shortDescription)
+                                descEdit = userObj.shortDescription;
+                            if(imgName === '' && userObj.img !== '')
+                                imgName = userObj.img;
+                            if(req.files !== null) {
+                                img = req.files.editImg;
+                                imgName = img.name;
+                                img.mv(path.resolve(__dirname + '/..', 'public/images/users', imgName));
+                            }
+                            bcrypt.genSalt(10, (error, salt) => {
+                                bcrypt.hash(newPass, salt, (error, hash) => {
+                                    const update = {
+                                        dateCreated: userObj.dateCreated,
+                                        emailAddress: userObj.emailAddress,
+                                        username: userObj.username,
+                                        password: hash,
+                                        shortDescription: descEdit,
+                                        img: imgName
+                                    }
+                                    database.updateOne(User, {_id: req.session.userID}, update, (success) => {
+                                        if(success) {
+                                            req.session.username = update.username;
+                                            req.flash('success_msg', 'Successfully updated account details.');
+                                            res.redirect('/editProfile/' + req.session.username);
+                                        }
+                                        else {
+                                            req.flash('error_msg', 'Unable to update account details. Please try again.');
+                                            res.redirect('/editProfile/' + req.session.username);
+                                        };
+                                    });
+                                });
+                            });
                         }
                         else {
-                            bcrypt.compare(currPass, userObj.password, (error, result) => {
-                                if(result) {
-                                    if(userEdit === '')
-                                        userEdit = userObj.username;
-                                    if(newPass === '')
-                                        newPass = currPass;
-                                    if(descEdit === userObj.shortDescription)
-                                        descEdit = userObj.shortDescription;
-                                    if(imgName === '' && userObj.img !== '')
-                                        imgName = userObj.img;
-                                    if(req.files !== null) {
-                                        img = req.files.editImg;
-                                        imgName = img.name;
-                                        img.mv(path.resolve(__dirname + '/..', 'public/images/users', imgName));
-                                    }
-                                    bcrypt.genSalt(10, (error, salt) => {
-                                        bcrypt.hash(newPass, salt, (error, hash) => {
-                                            const update = {
-                                                dateCreated: userObj.dateCreated,
-                                                emailAddress: userObj.emailAddress,
-                                                username: userEdit,
-                                                password: hash,
-                                                shortDescription: descEdit,
-                                                img: imgName
-                                            }
-                                            database.updateOne(User, {_id: req.session.userID}, update, (success) => {
-                                                if(success) {
-                                                    req.session.username = update.username;
-                                                    req.flash('success_msg', 'Successfully updated account details.');
-                                                    res.redirect('/editProfile/' + req.session.username);
-                                                }
-                                                else {
-                                                    req.flash('error_msg', 'Unable to update account details. Please try again.');
-                                                    res.redirect('/editProfile/' + req.session.username);
-                                                };
-                                            });
-                                        });
-                                    });
-                                }
-                                else {
-                                    req.flash('error_msg', 'Incorrect password. Please try again.');
-                                    res.redirect('/editProfile/' + req.session.username);
-                                }
-                            });
+                            req.flash('error_msg', 'Incorrect password. Please try again.');
+                            res.redirect('/editProfile/' + req.session.username);
                         }
                     });
                 }

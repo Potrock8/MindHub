@@ -52,13 +52,6 @@ const loginValidation = [
 ];
 
 const updateUserValidation = [
-    body('userEdit').custom((value) => {
-        if((value.length > 0) && (value.length < 8))
-            throw new Error('New username must be at least 8 characters long.');
-
-        return true;
-    }),
-
     body('currPass').not().isEmpty().withMessage('Please enter your current password in order to save your changes.'),
 
     body('newPass').custom((value, { req }) => {

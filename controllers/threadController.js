@@ -154,7 +154,7 @@ const threadController = {
         const errors = validationResult(req);
 
         if(errors.isEmpty()) {
-            database.findOne(Thread, {title: req.body.threadTitle}, null, (threadObj) => {
+            database.findOne(Thread, { title: req.body.threadTitle }, null, (threadObj) => {
                 if(threadObj instanceof Object) {
                     req.flash('error_msg', 'Thread title already exists. Please try a different thread title.');
                     res.redirect(`/getEditThread/${req.body.threadID}`);
