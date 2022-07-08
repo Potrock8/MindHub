@@ -16,7 +16,7 @@ const commentController = {
                     res.redirect(`/thread/${comment.threadID}`);
                 }
                 else {
-                    req.flash('error_msg', 'Could not create new comment. Please try again.');
+                    req.flash('error_msg', 'Encountered an error while creating the comment. Please try again.');
                     res.redirect(`/thread/${comment.threadID}`);
                 }
             })
@@ -36,12 +36,11 @@ const commentController = {
     },
 
     postEditComment: (req,res) => {
-        
         var comment = {
-            _id: req.body.commentID,
+            _id: req.params.commentid,
             content: req.body.commentContent
         }
-        console.log(comment);
+
         database.findOne(Comment, { _id: comment._id}, null, (found1) => {
             if(found1 instanceof Object) {
                 database.updateOne(Comment, { _id: comment._id}, comment, (found2) => {
@@ -56,19 +55,18 @@ const commentController = {
                 });
             }
             else {
-                req.flash('error_msg', 'Encountered an error while updating the comment. Please try again.');
-                res.redirect(`/editThread/${req.params.id}`);
+                req.flash('error_msg', 'Comment not found. Please try again.');
+                res.redirect(`/thread/${req.params.id}/getEditComment/${req.params.commentid}`);
             }
         });
     },
 
     postDeleteComment: (req, res) => {
-        database.findOne(Comment, {_id: req.body.commentID}, null, (found1) =>{
-            if (found1 instanceof Object){
-                console.log(found1);
-                database.deleteOne(Comment, {_id: found1._id}, (found2) => {
-                    console.log(found2);
+        database.findOne(Comment, { _id: req.params.commentid }, null, (found1) =>{
+            if(found1 instanceof Object){
+                database.deleteOne(Comment, { _id: found1._id }, (found2) => {
                     if(found2) {
+                        req.flash('success_msg', 'Successfully deleted the comment.');
                         res.redirect(`/thread/${req.params.id}`)
                     }
                     else { 
@@ -78,7 +76,7 @@ const commentController = {
                 });
             }
             else {
-                req.flash('error_msg', 'Encountered an error while deleting the comment. Please try again.');
+                req.flash('error_msg', 'Comment not found. Please try again.');
                 res.redirect(`/thread/${req.params.id}`);
             }
            

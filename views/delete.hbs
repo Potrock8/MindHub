@@ -1,8 +1,12 @@
 <section id="settings">
     <h1>Delete User</h1>
     <form id="form" method="post" action="/deleteUser/{{session.username}}">    
-        <h1>{{username}}</h1>
-        <center><img src="/images/users/{{img}}" id="userimg" alt="display picture"></center>
+        <h1>{{session.username}}</h1>
+        {{#if hasImage}}
+            <center><img src="/images/users/{{img}}" id="userimg" alt="{{session.username}} display picture"></center>
+        {{else}}
+            <center><img src="/images/user.png" id="userimg" alt="Default display picture"></center>
+        {{/if}}
         <br />
         <center><p><strong>Please enter your current password to delete your account.</strong></p></center>
         <br />

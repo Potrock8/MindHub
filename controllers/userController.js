@@ -19,21 +19,25 @@ const userController = {
 
     getUser: (req, res) => {
         var query = req.params;
+        var hasImage = false;
 
         database.findOne(User, query, null, (userObj) => {
             if(userObj instanceof Object) {
-                database.findMany(Thread, {username: userObj.username}, null, (threadObj) => {
-                    if(threadObj instanceof Object){
-                        res.render('user', {user: userObj, threads: threadObj});
+                if(userObj.img !== '')
+                    hasImage = true;
+                Object.assign(userObj, { hasImage: hasImage });
+                database.findMany(Thread, { username: userObj.username }, null, (threadObj) => {
+                    if(threadObj instanceof Object) {
+                        res.render('user', { user: userObj, threads: threadObj });
                     }
-                    else{
-                        res.render('user', {user: userObj});
+                    else {
+                        res.render('user', { user: userObj });
                     }
                 });
    
             }
             else {
-                req.flash('error_msg', 'User does not exist...');
+                req.flash('error_msg', 'User not found. Please try again.');
                 res.redirect('/');
             }
         }); 
@@ -41,13 +45,18 @@ const userController = {
 
     getSettings: (req, res) => {
         var query = req.params;
+        var hasImage = false;
 
         database.findOne(User, query, null, (userObj) => {
             if(userObj instanceof Object) {
+                if(userObj.img !== '')
+                    hasImage = true;
+
                 var data = {
                     username: userObj.username,
                     description: userObj.shortDescription,
-                    img: userObj.img
+                    img: userObj.img,
+                    hasImage: hasImage
                 }
                 res.render('editProfile', data);
             }
@@ -60,12 +69,17 @@ const userController = {
 
     getDelete: (req, res) => {
         var query = req.params;
+        var hasImage = false;
 
         database.findOne(User, query, null, (userObj) => {
             if(userObj instanceof Object) {
+                if(userObj.img !== '')
+                    hasImage = true;
+
                 var data = {
                     username: userObj.username,
-                    img: userObj.img
+                    img: userObj.img,
+                    hasImage: hasImage
                 }
                 res.render('delete', data);
             }

@@ -1,5 +1,5 @@
 .postTab {
-  border-radius: 5px;
+  border-radius: 5px 5px 0 0;
   background-color:#8ec2eb;
   padding: 15px;
   max-width: 100%;
@@ -98,7 +98,7 @@
   font-size: 15px;
   background-color: #12456d;
   color: #f1f1f1;
-  max-width: 60%;
+  max-width: 65%;
   max-height: 80%;
   display: block;
   padding: 0px;

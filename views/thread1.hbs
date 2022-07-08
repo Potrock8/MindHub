@@ -33,7 +33,7 @@
                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                   </button>
                   </form>
-                  {{/if}}
+                {{/if}}
                 <button class="reply-btn" id="replyBtn">Reply</button>
             </div>
             <div class="write-comment" id="write-comment">
@@ -42,9 +42,9 @@
                   <input type="hidden" value="{{thread._id}}" name="threadID" id="threadID" />
                   <textarea id="comment-text" name="commentContent" placeholder="What are your thoughts...?"></textarea>
                   <button type="submit" id="submitBtn">Submit</button>
-                  <button id="cancelBtn">Cancel</button>
                 </form>
-                {{/if}}
+                <button id="cancelBtn">Cancel</button>
+              {{/if}}
               </div>
             </div>
           </div>

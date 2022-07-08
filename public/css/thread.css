@@ -227,4 +227,5 @@ hr{
   margin-right: auto;
   display: block;
   padding: 10px;
+  max-width: 90%;
 }

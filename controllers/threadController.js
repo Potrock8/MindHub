@@ -5,7 +5,6 @@ const Comment = require('../models/Comment.js');
 
 const fileUpload = require('express-fileupload');
 const path = require('path');
-const session = require('express-session');
 
 const threadController = {
     getCreateThread: (req, res) => {
@@ -16,15 +15,33 @@ const threadController = {
         var threadOwner = false;
         var image = false;
 
-        database.findOne(Thread, {_id: req.params.id},null, (found) => {
-            database.findMany(Comment, {threadID: req.params.id }, null, (found2) =>{
+        database.findOne(Thread, { _id: req.params.id }, null, (found) => {
+            if(found instanceof Object) {
                 if(found.username === req.session.username)
                     threadOwner = true;
                 if(found.img !== '')
                     image = true;
-                data = {thread: found, isThreadOwner: threadOwner, hasImage: image, comments: found2};
-                res.render('thread1', data);
-            });
+                database.findMany(Comment, { threadID: req.params.id }, null, (found2) =>{
+                    if(found2.length === 0) {
+                        data = {thread: found, isThreadOwner: threadOwner, hasImage: image};
+                        res.render('thread1', data);
+                    }
+                    else {
+                        for(i = 0; i < found2.length; i++) {
+                            if(found2[i].username === req.session.username)
+                                Object.assign(found2[i], { isCommentOwner: true });
+                            else
+                                Object.assign(found2[i], { isCommentOwner: false });
+                        }
+                        data = {thread: found, isThreadOwner: threadOwner, hasImage: image, comments: found2};
+                        res.render('thread1', data);
+                    }
+                });
+            }
+            else {
+                req.flash('error_msg', 'Thread not found. Please try again.');
+                res.redirect('/');
+            }
         });
     },
 
@@ -32,10 +49,8 @@ const threadController = {
         var thread = { _id: req.params.id }
         console.log(thread._id);
         database.findOne(Thread, thread, null, (threadObj)=>{
-            console.log(threadObj);
-            if(threadObj instanceof Object) {
+            if(threadObj instanceof Object)
                 res.render('editThread', {thread: threadObj})
-            }
             else {
                 req.flash('error_msg', 'Unable to find the requested page. Please try again');
                 res.redirect('/');
@@ -44,18 +59,17 @@ const threadController = {
     },
 
     getSearchResult: (req, res) => {
-        const term = req.query.term.toString();
-        const query = {lowerCaseTitle:{$regex: new RegExp(term)}};
+        const term = req.query.term.toString().toLowerCase();
+        const query = { lowerCaseTitle: { $regex: new RegExp(term) } };
 
         database.findMany(Thread, query, null, (found) => {
-            console.log(found);
-            if(found){
-                res.render('search', {threads: found});
-            }
-            else{
-                req.flash('error_msg', 'No results...')
+            console.log(found)
+            if(found.length === 0) {
+                req.flash('error_msg', 'No results found...');
                 res.redirect('/');
             }
+            else
+                res.render('search', {threads: found});
         });
     },
 
@@ -80,7 +94,6 @@ const threadController = {
 
             database.findOne(Thread, {title: threadTitle}, null, (threadObj) => {
                 if(threadObj instanceof Object) {
-
                     req.flash('error_msg', 'Thread title already exists. Please try a different thread title.');
                     res.redirect('/createThread');
                 }
@@ -88,7 +101,7 @@ const threadController = {
                     if(req.files !== null) {
                         img = req.files.img;
                         imgName = img.name;
-                        img.mv(path.resolve(__dirname + '/..','public/images/threads', imgName));
+                        img.mv(path.resolve(__dirname + '/..', 'public/images/threads', imgName));
                     }
                     var thread = {
                         dateCreated: Date.now(), 
@@ -107,7 +120,7 @@ const threadController = {
                             });
                         }
                         else {
-                            req.flash('error_msg', 'Could not create thread. Please try again.');
+                            req.flash('error_msg', 'Encountered an issue while creating the thread. Please try again.');
                             res.redirect('/createThread');
                         }
                     });
@@ -123,57 +136,65 @@ const threadController = {
     },
 
     postDeleteThread: (req, res) => {
-        database.deleteOne(Thread, {_id: req.params.id}, (found1) => {
+        database.deleteOne(Thread, { _id: req.params.id }, (found1) => {
             if(found1) {
-                database.deleteMany(Comment, {threadID: req.params.id}, (found2) => {
-                    if(found2) {
-						req.flash('success_msg', 'Successfully deleted the thread.');
-                        res.redirect('/');
-                    }
+                database.deleteMany(Comment, { threadID: req.params.id }, (found2) => {
+                    req.flash('success_msg', 'Successfully deleted the thread.');
+                    res.redirect('/');
                 });
             }
 			else {
 				req.flash('error_msg', 'Encountered an issue while deleting the thread. Please try again.');
-				res.redirect(`/`);
+				res.redirect('/');
 			}
         });	
     },
 
     postEditThread: (req,res) => {
-        var img;
-        var imgName = '';
+        const errors = validationResult(req);
 
-        database.findOne(Thread, {_id: req.body.threadID}, null, (found1) => {
-            if(req.files !== null) {
-                img = req.files.img;
-                imgName = img.name;
-                img.mv(path.resolve(__dirname + '/..', 'public/images/threads', imgName));
-            }
-            if(found1 instanceof Object) {
-                var thread = {
-                    dateCreated: found1.dateCreated,
-                    title: req.body.threadTitle,
-                    username: req.session.username,
-                    content: req.body.threadContent,
-                    lowerCaseTitle: req.body.threadTitle.toLowerCase(),
-                    img: imgName
+        if(errors.isEmpty()) {
+            var img;
+            var imgName = '';
+
+            database.findOne(Thread, { _id: req.body.threadID }, null, (found1) => {
+                if(req.files !== null) {
+                    img = req.files.editImg;
+                    imgName = img.name;
+                    img.mv(path.resolve(__dirname + '/..', 'public/images/threads', imgName));
                 }
-                database.updateOne(Thread, {_id: found1._id}, thread, (found2) => {
-                    if(found2) {
-                        req.flash('success_msg', 'Successfully updated the thread.');
-				        res.redirect(`/thread/${found1._id}`);
+                if(found1 instanceof Object) {
+                    var thread = {
+                        dateCreated: found1.dateCreated,
+                        title: req.body.threadTitle,
+                        username: req.session.username,
+                        content: req.body.threadContent,
+                        lowerCaseTitle: req.body.threadTitle.toLowerCase(),
+                        img: imgName
                     }
-                    else {
-                        req.flash('error_msg', 'Encountered an issue while updating the thread. Please try again.');
-				        res.redirect(`/thread/${found1._id}`);
-                    }
-                });
-            }
-            else {
-                req.flash('error_msg', 'Encountered an issue while updating the thread. Please try again.');
-				res.redirect(`/thread/${found1._id}`);
-            }       
-        });
+                    database.updateOne(Thread, {_id: found1._id}, thread, (found2) => {
+                        if(found2) {
+                            req.flash('success_msg', 'Successfully updated the thread.');
+                            res.redirect(`/thread/${found1._id}`);
+                        }
+                        else {
+                            req.flash('error_msg', 'Encountered an issue while updating the thread. Please try again.');
+                            res.redirect(`/thread/${found1._id}`);
+                        }
+                    });
+                }
+                else {
+                    req.flash('error_msg', 'Encountered an issue while updating the thread. Please try again.');
+                    res.redirect(`/thread/${found1._id}`);
+                }       
+            });
+        }
+        else {
+            const messages = errors.array().map((item) => item.msg);
+
+            req.flash('error_msg', messages.join(' '));
+            res.redirect(`/getEditThread/${req.body.threadID}`);
+        }
     }
     
 }

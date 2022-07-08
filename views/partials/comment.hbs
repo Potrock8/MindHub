@@ -13,14 +13,15 @@
       <i class="fa fa-clock-o"></i>
       {{dateFormat dateCreated "L, LT "}}
     </p>
+    {{#if isCommentOwner}}
     <a href="/thread/{{threadID}}/getEditComment/{{_id}}" class="edit-btn" id="cmtEditBtn">
       <i class="fa fa-pencil" aria-hidden="true"></i>
     </a>
-    <form action="/thread/{{threadID}}/deleteComment" method="POST">
-    <input type="hidden" value="{{_id}}" name="commentID" id="commentID" />
+    <form action="/thread/{{threadID}}/deleteComment/{{_id}}" method="POST">
     <button type="submit" class="delete-btn" id="cmtDeleteBtn">
       <i class="fa fa-trash-o" aria-hidden="true"></i>
     </button>
     </form>
+    {{/if}}
   </div>
 </div>

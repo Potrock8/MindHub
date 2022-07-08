@@ -9,6 +9,7 @@ function clearText() {
     $('#threadTitle').val('');
     $('#threadContent').val('');
 };
+
 $(document).ready(() => {
     $('#threadTitle').keyup(() => {
         var title = $('#threadTitle').val();

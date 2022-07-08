@@ -30,7 +30,7 @@ isSessionUser = (req, res, next) => {
 };
 
 isThreadOwner = (req, res, next) => {
-    database.findOne(Thread, {_id: req.params.id}, null, (result) => {
+    database.findOne(Thread, { _id: req.params.id }, null, (result) => {
         if(result instanceof Object) {
             if(result.username === req.session.username)
                 return next();
@@ -49,7 +49,7 @@ isThreadOwner = (req, res, next) => {
 //'/thread/:id/getEditComment/:commentid'
 
 isCommentOwner = (req, res, next) => {
-    database.findOne(Comment, {_id: req.params.commentid}, null, (result) => {
+    database.findOne(Comment, { _id: req.params.commentid }, null, (result) => {
         if(result instanceof Object) {
             if(result.username === req.session.username)
                 return next();

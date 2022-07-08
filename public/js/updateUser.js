@@ -94,4 +94,15 @@ $(document).ready(() => {
             $('#confirmNewPass').css('border-color', '#ddd');
         }
     });
+
+    $('#editImg').change(() => {
+        var img= $('#editImg').val();
+        var imgExtension = img.slice(-4).toLowerCase();
+
+        if((imgExtension === '.jpg') || (imgExtension === '.png') || (imgExtension === 'jpeg') || (imgExtension === '')) {
+            $('#message').text('');
+        }
+        else 
+            $('#message').text('File extension must be either ".jpg", ".png", or ".jpeg".');
+    });
 });

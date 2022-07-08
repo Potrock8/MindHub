@@ -1,12 +1,16 @@
 <section id="profile">
-    <img src="/images/users/{{user.img}}" id="profileImg" alt="{{user.username}} display picture"/>
+    {{#if user.hasImage}}
+        <img src="/images/users/{{user.img}}" id="profileImg" alt="{{user.username}} display picture"/>
+    {{else}}
+        <img src="/images/user.png" id="profileImg" alt="default display picture"/>
+    {{/if}}
     <div id="profile-name">
         <h1>{{user.username}}</h1>
         {{#sameUser session.username user.username}}
         {{/sameUser}}
     </div>
     <div id="userDesc">
-        <p>{{user.description}}</p>
+        <p>{{user.shortDescription}}</p>
     </div>
     
 </section>

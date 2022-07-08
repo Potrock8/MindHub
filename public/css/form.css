@@ -29,7 +29,6 @@
 }
 #infoForm [type="file"] {
     font-size: 15px;
-    padding-left: 37px;
 }
 textarea {
     width: 90%;
@@ -61,4 +60,7 @@ textarea {
 #success {
     font-weight: bold;
     color: black;
+}
+#img {
+    width: 200px;
 }

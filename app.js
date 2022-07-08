@@ -45,15 +45,9 @@ app.use(fileUpload());
 
 handlebars.registerHelper('sameUser', (sessionUser, user, options) => {
     if(sessionUser === user)
-        return '<a id="editProfile" href="/editProfile/' + sessionUser + '">Edit Profile</a>\n' +
+        return '<a id="editProfile" href="/editProfile/' + sessionUser + '">Edit Profile</a>' +
         '<a id="deleteUser" href="/delete/' + sessionUser + '">Delete Account</a>';
     return options.inverse(this);
-});
-
-handlebars.registerHelper('isCommentOwner', (sessionUser, user) => {
-    if(sessionUser === user)
-        return true;
-    return false;
 });
 
 database.connect(url);

@@ -127,4 +127,15 @@ $(document).ready(() => {
             $('#confirmPass').css('border-color', 'black');
         }
     });
+
+    $('#img').change(() => {
+        var img= $('#img').val();
+        var imgExtension = img.slice(-4).toLowerCase();
+
+        if((imgExtension === '.jpg') || (imgExtension === '.png') || (imgExtension === 'jpeg') || (imgExtension === '')) {
+            $('#message').text('');
+        }
+        else 
+            $('#message').text('File extension must be either ".jpg", ".png", or ".jpeg".');
+    });
 });

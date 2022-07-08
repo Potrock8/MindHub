@@ -10,8 +10,7 @@
           </div>
         </div>
         <div class="formBox">
-          <form method="POST" action="/thread/{{comment.threadID}}/postEditComment">
-              <input type="hidden" value="{{comment._id}}" name="commentID" id="commentID" />
+          <form method="POST" action="/thread/{{comment.threadID}}/postEditComment/{{comment._id}}">
             <div id="contentArea" class="displayBlock">
               <textarea id="commentContent" name="commentContent" class="textAreaSize">{{comment.content}}</textarea>
               <h3 id="message">{{> messages}}</h3>
