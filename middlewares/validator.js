@@ -115,7 +115,6 @@ const threadValidation = [
         .isLength({ min: 1 }).withMessage('Thread content must be at least 1 character long.'),
 
     body('img').custom((value, { req }) => {
-        console.log('here')
         if(req.files !== null) {
             var imgName = req.files.img.name;
             var imgExtension = imgName.slice(-4).toLowerCase();

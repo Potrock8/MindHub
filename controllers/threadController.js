@@ -154,15 +154,7 @@ const threadController = {
         const errors = validationResult(req);
 
         if(errors.isEmpty()) {
-            var img;
-            var imgName = '';
-
             database.findOne(Thread, { _id: req.body.threadID }, null, (found1) => {
-                if(req.files !== null) {
-                    img = req.files.editImg;
-                    imgName = img.name;
-                    img.mv(path.resolve(__dirname + '/..', 'public/images/threads', imgName));
-                }
                 if(found1 instanceof Object) {
                     var thread = {
                         dateCreated: found1.dateCreated,
@@ -170,7 +162,7 @@ const threadController = {
                         username: req.session.username,
                         content: req.body.threadContent,
                         lowerCaseTitle: req.body.threadTitle.toLowerCase(),
-                        img: imgName
+                        img: found1.img
                     }
                     database.updateOne(Thread, {_id: found1._id}, thread, (found2) => {
                         if(found2) {

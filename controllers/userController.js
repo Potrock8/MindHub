@@ -232,15 +232,15 @@ const userController = {
                                         newPass = currPass;
                                     if(descEdit === userObj.shortDescription)
                                         descEdit = userObj.shortDescription;
-        
+                                    if(imgName === '' && userObj.img !== '')
+                                        imgName = userObj.img;
+                                    if(req.files !== null) {
+                                        img = req.files.editImg;
+                                        imgName = img.name;
+                                        img.mv(path.resolve(__dirname + '/..', 'public/images/users', imgName));
+                                    }
                                     bcrypt.genSalt(10, (error, salt) => {
                                         bcrypt.hash(newPass, salt, (error, hash) => {
-                                            if(req.files !== null) {
-                                                img = req.files.editImg;
-                                                imgName = img.name;
-                                                img.mv(path.resolve(__dirname + '/..', 'public/images/users', imgName));
-                                            }
-
                                             const update = {
                                                 dateCreated: userObj.dateCreated,
                                                 emailAddress: userObj.emailAddress,
